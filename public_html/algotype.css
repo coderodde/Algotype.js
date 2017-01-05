@@ -1,0 +1,13 @@
+alg-algorithm {
+    display: none;
+}
+
+.algotype-text {
+    font-family: Times New Roman;
+    font-size: 18px;
+}
+
+.algotype-algorithm-name {
+    font-variant: small-caps;
+    font-weight: bolder;
+}
