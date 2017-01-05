@@ -97,31 +97,40 @@ Algotype.getAlgorithmHeaderComment = function (algorithmElement) {
             " " + algorithmHeaderComment;
 };
 
+Algotype.getAlgorithmParameterList = function(algorithmElement) {
+    var algorithmParameterList = 
+            algorithmElement.getAttribute("parameter-list");
+    
+    if (!algorithmParameterList) {
+        return "$()$";
+    }
+    
+    if (algorithmParameterList[0] !== "(") {
+        algorithmParameterList = "(" + algorithmParameterList;
+    }
+    
+    if (algorithmParameterList[algorithmParameterList.length - 1] !== ")") {
+        algorithmParameterList += ")";
+    }
+    
+    return "$" + algorithmParameterList + "$";
+};
+
 Algotype.typesetAlgorithm = function(algorithmElement) {
     var algorithmName =
             algorithmElement.getAttribute("name") || Algotype.UNNAMED_ALGORITHM;
     
-    var algorithmParameterElements = 
-            Algotype.getAlgorithmParameterElements(algorithmElement);
-    
-    var algorithmParameterNames = 
-            Algotype.getParameterNames(algorithmParameterElements);
-    
-    var parameterListText = 
-            Algotype.getParameterListText(algorithmParameterNames);
-    
-    alert(parameterListText);
+    var algorithmParameterList = 
+            Algotype.getAlgorithmParameterList(algorithmElement);
     
     var commentText = Algotype.getAlgorithmHeaderComment(algorithmElement);
     
     var parentNode = algorithmElement.parentNode;
-    
+
     var htmlText = 
             "<span class='algotype-text algotype-algorithm-name'>" +
             algorithmName +
-            "</span>$" + 
-            parameterListText + 
-            "$" +
+            "</span>" + algorithmParameterList + 
             commentText +
             "<br/>";
     
@@ -134,7 +143,6 @@ Algotype.setup = function() {
     
     // Create the Algotype.js specific tags.
     document.registerElement("alg-algorithm");
-    document.registerElement("alg-parameter");
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");
