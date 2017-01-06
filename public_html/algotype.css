@@ -15,16 +15,19 @@ table.algotype-code-row-table {
     padding: 0;
     margin: 0;
     border-collapse: collapse;
+    margin-bottom: -3px;
 }
 
 tbody.algotype-code-row-tbody {
     padding: 0;
     margin: 0;
+    margin-bottom: -3px;
 }
 
 tr.algotype-algorithm-line {
     padding: 0;
     margin: 0;
+    margin-bottom: -3px;
 }
 
 td.algotype-algorithm-line-number {
@@ -34,11 +37,13 @@ td.algotype-algorithm-line-number {
     font-size: 18px;
     width: 20px;
     text-align: right;
+    margin-bottom: -3px;
 }
 
 td.algorithm-line-number-space {
     padding: 0;
     margin: 0;
+    margin-bottom: -3px;
 }
 
 .algotype-algorithm-name {

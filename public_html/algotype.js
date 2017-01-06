@@ -12,7 +12,7 @@ Algotype.ALGORITHM_STEP_COMMENT_TAG = "##";
 Algotype.LINE_NUMBER_WIDTH = 25;
 
 // The indentation in pixels.
-Algotype.INDENTATION_WIDTH = 30;
+Algotype.INDENTATION_WIDTH = 25;
 
 // Number of pixels between the line number span and the pseudocode span.
 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE = 8;
@@ -178,24 +178,6 @@ Algotype.typesetForEach = function(forEachElement, state) {
                    "</tr>\n" +
                    "</tbody>\n" +
                    "</table>\n";
-                   
-    
-//    var htmlText = "<div class='algotype-text' style='width: " + 
-//                   Algotype.LINE_NUMBER_WIDTH + "px; float:left;'>" +
-//                   "<span style='float:left;'>" +
-//                   state["lineNumber"] + "</span>" + 
-//                   "</div>";
-    
-//    var htmlText = "<span style='width:100px;'>" +
-//                       "<span style='width:80px; align:right;'>" + 
-//                       state["lineNumber"] + "</span>" +
-//                       "<span style='width:20px;></span>" +
-//                   "</span>";
-//    
-//    htmlText += "<span class='algotype-text algotype-keyword' " + 
-//                "style='margin-left: " + 
-//                (Algotype.INDENTATION_WIDTH * state["indentation"]) + "px;'" +
-//                ">for each</span>" + conditionTeX + ":<br/>";
         
     var saveIndentation = state["indentation"];
     
@@ -240,7 +222,7 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     var childElements = algorithmElement.children;
     
     var state = {
-        lineNumber: 9,
+        lineNumber: 8,
         indentation: 0
     };
     
