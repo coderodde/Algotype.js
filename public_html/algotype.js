@@ -6,6 +6,11 @@ Algotype.ALGORITHM_HEADER_COMMENT_TAG = "#";
 // The string beginning the step comments. 
 Algotype.ALGORITHM_STEP_COMMENT_TAG = "##";
 
+// The width of code line numbers. This default works well. If you, however, 
+// need to typeset an algorithm with at least 100 rows (in which case the space
+// is tight) just increase this constant.
+Algotype.LINE_NUMBER_WIDTH = 25;
+
 // The URL from which to download the MathJax math typesetting facilities.
 Algotype.MATHJAX_SCRIPT_URL = 
     "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML";
@@ -143,20 +148,24 @@ Algotype.typesetForEach = function(forEachElement, state) {
     conditionTeX = conditionTeX.trim();
     
     if (conditionTeX[0] !== "$") {
-        conditionTeX = "$" + conditionTeX;
+        conditionTeX = "$\\;" + conditionTeX;
     }
     
     if (conditionTeX[conditionTeX.length - 1] !== "$") {
         conditionTeX += "$";
     }
     
-    var htmlText = "<span style='align: left;'>" +
+    var htmlText = "<span class='algotype-text' style='width: " + 
+                   Algotype.LINE_NUMBER_WIDTH + "px; float: left;'>" +
                    state["lineNumber"] + 
                    "</span>";
            
     htmlText += "<span class='algotype-text algotype-keyword' " + 
                 "style='margin-left: " + (40 * state["indentation"]) + "px;'" +
                 ">for each</span>" + conditionTeX + ":<br/>";
+        
+    var saveIndentation = state["indentation"];
+    
     state["lineNumber"]++;
     state["indentation"]++;
     
@@ -172,6 +181,8 @@ Algotype.typesetForEach = function(forEachElement, state) {
         }
     }
     
+    // Reset the indentation counter.
+    state["indentation"] = saveIndentation;
     return htmlText;
 };
 
@@ -196,7 +207,7 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     var childElements = algorithmElement.children;
     
     var state = {
-        lineNumber: 1,
+        lineNumber: 10,
         indentation: 0
     };
     

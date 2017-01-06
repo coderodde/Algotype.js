@@ -11,6 +11,11 @@ alg-algorithm {
     font-weight: bold;
 }
 
+.algorithm-line-number {
+    font-family: Times New Roman;
+    font-size: 16px;
+}
+
 .algotype-algorithm-name {
     font-variant: small-caps;
     font-weight: bolder;
