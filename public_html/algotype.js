@@ -101,19 +101,41 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     var algorithmParameterList = 
             algorithmElement.getAttribute("parameter-list");
     
+    algorithmParameterList = algorithmParameterList.trim();
+    
     if (!algorithmParameterList) {
         return "$()$";
     }
     
-    if (algorithmParameterList[0] !== "(") {
-        algorithmParameterList = "(" + algorithmParameterList;
+    // Remove the beginning parenthesis, if present.
+    if (algorithmParameterList[0] === "(") {
+        algorithmParameterList = 
+                algorithmParameterList.substring(1, 
+                                                 algorithmParameterList.length);
     }
     
-    if (algorithmParameterList[algorithmParameterList.length - 1] !== ")") {
-        algorithmParameterList += ")";
+    // Remove the ending parenthesis, if present.
+    if (algorithmParameterList[algorithmParameterList - 1] === ")") {
+        algorithmParameterList.substring(0, algorithmParameterList.length - 1);
     }
     
-    return "$" + algorithmParameterList + "$";
+    // Remove possible leading and trailing space within the parentheses.
+    algorithmParameterList = algorithmParameterList.trim();
+    
+    // Split the string into parameter tokens.
+    var algorithmParameters = algorithmParameterList.split(/\s*,\s*|\s+/);
+    
+    // Construct the TeX for the algorithm parameter list.
+    var tex = "$(";
+    var separator = "";
+    
+    for (var i = 0; i < algorithmParameters.length; ++i) {
+        tex += separator;
+        tex += algorithmParameters[i];
+        separator = ", ";
+    }
+    
+    return tex + ")$";
 };
 
 Algotype.typesetAlgorithm = function(algorithmElement) {
