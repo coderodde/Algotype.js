@@ -11,9 +11,34 @@ alg-algorithm {
     font-weight: bold;
 }
 
-.algorithm-line-number {
+table.algotype-code-row-table {
+    padding: 0;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+tbody.algotype-code-row-tbody {
+    padding: 0;
+    margin: 0;
+}
+
+tr.algotype-algorithm-line {
+    padding: 0;
+    margin: 0;
+}
+
+td.algotype-algorithm-line-number {
+    padding: 0;
+    margin: 0;
     font-family: Times New Roman;
-    font-size: 16px;
+    font-size: 18px;
+    width: 20px;
+    text-align: right;
+}
+
+td.algorithm-line-number-space {
+    padding: 0;
+    margin: 0;
 }
 
 .algotype-algorithm-name {

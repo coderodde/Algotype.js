@@ -11,6 +11,12 @@ Algotype.ALGORITHM_STEP_COMMENT_TAG = "##";
 // is tight) just increase this constant.
 Algotype.LINE_NUMBER_WIDTH = 25;
 
+// The indentation in pixels.
+Algotype.INDENTATION_WIDTH = 30;
+
+// Number of pixels between the line number span and the pseudocode span.
+Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE = 8;
+
 // The URL from which to download the MathJax math typesetting facilities.
 Algotype.MATHJAX_SCRIPT_URL = 
     "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML";
@@ -155,14 +161,41 @@ Algotype.typesetForEach = function(forEachElement, state) {
         conditionTeX += "$";
     }
     
-    var htmlText = "<span class='algotype-text' style='width: " + 
-                   Algotype.LINE_NUMBER_WIDTH + "px; float: left;'>" +
-                   state["lineNumber"] + 
-                   "</span>";
-           
-    htmlText += "<span class='algotype-text algotype-keyword' " + 
-                "style='margin-left: " + (40 * state["indentation"]) + "px;'" +
-                ">for each</span>" + conditionTeX + ":<br/>";
+    var htmlText = "<table class='algotype-code-row-table'>\n" +
+                   "<tbody class='algotype-code-row-tbody'>\n" +
+                   "<tr class='algotype-algorithm-line'>\n" +
+                   "<td class='algotype-algorithm-line-number'>" +
+                   state["lineNumber"] +
+                   "</td> " +
+                   "<td class='algorithm-line-number-space' width='" + 
+                   (Algotype.INDENTATION_WIDTH * state["indentation"] + 
+                    Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
+                   "px'>" +
+                   "</td> " +
+                   "<td class='algotype-text algotype-keyword'>for each " + 
+                   conditionTeX + 
+                   ":</td> " +
+                   "</tr>\n" +
+                   "</tbody>\n" +
+                   "</table>\n";
+                   
+    
+//    var htmlText = "<div class='algotype-text' style='width: " + 
+//                   Algotype.LINE_NUMBER_WIDTH + "px; float:left;'>" +
+//                   "<span style='float:left;'>" +
+//                   state["lineNumber"] + "</span>" + 
+//                   "</div>";
+    
+//    var htmlText = "<span style='width:100px;'>" +
+//                       "<span style='width:80px; align:right;'>" + 
+//                       state["lineNumber"] + "</span>" +
+//                       "<span style='width:20px;></span>" +
+//                   "</span>";
+//    
+//    htmlText += "<span class='algotype-text algotype-keyword' " + 
+//                "style='margin-left: " + 
+//                (Algotype.INDENTATION_WIDTH * state["indentation"]) + "px;'" +
+//                ">for each</span>" + conditionTeX + ":<br/>";
         
     var saveIndentation = state["indentation"];
     
@@ -207,7 +240,7 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     var childElements = algorithmElement.children;
     
     var state = {
-        lineNumber: 10,
+        lineNumber: 9,
         indentation: 0
     };
     
