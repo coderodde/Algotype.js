@@ -99,7 +99,7 @@ Algotype.getAlgorithmHeaderComment = function (algorithmElement) {
 
 Algotype.getAlgorithmParameterList = function(algorithmElement) {
     var algorithmParameterList = 
-            algorithmElement.getAttribute("parameter-list");
+            algorithmElement.getAttribute("parameters") || "";
     
     algorithmParameterList = algorithmParameterList.trim();
     
@@ -138,6 +138,25 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     return tex + ")$";
 };
 
+Algotype.typesetForEach = function(forEachElement,
+                                   lineNumber, 
+                                   indentation) {
+    var conditionTeX = forEachElement.getAttribute("condition") || "";
+    conditionTeX = conditionTeX.trim();
+    
+    if (conditionTeX[0] !== "$") {
+        conditionTeX = "$" + conditionTeX;
+    }
+    
+    if (conditionTeX[conditionTeX.length - 1] !== "$") {
+        conditionTeX += "$";
+    }
+    
+    var htmlText = "<span>" + lineNumber["value"] + "</span>";
+    htmlText += "<span>" + "for each " + conditionTeX + "</span><br/>";
+    return htmlText;
+};
+
 Algotype.typesetAlgorithm = function(algorithmElement) {
     var algorithmName =
             algorithmElement.getAttribute("name") || Algotype.UNNAMED_ALGORITHM;
@@ -156,6 +175,28 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
             commentText +
             "<br/>";
     
+    var childElements = algorithmElement.children;
+    
+    var lineNumber = {value: 1};
+    var indentation = {value: 0};
+    
+    for (var i = 0; i < childElements.length; ++i) {
+        var elementName = childElements[i].tagName.toLowerCase();
+        
+        switch (elementName) {
+            case "alg-foreach":
+                htmlText += Algotype.typesetForEach(childElements[i],
+                                                    lineNumber,
+                                                    indentation);
+                break;
+                
+            case "alg-return":
+                break;
+               
+        }
+    }
+    alert("yeah: ");
+    alert(htmlText);
     parentNode.innerHTML += htmlText;
 };
 
@@ -165,6 +206,10 @@ Algotype.setup = function() {
     
     // Create the Algotype.js specific tags.
     document.registerElement("alg-algorithm");
+    document.registerElement("alg-foreach");
+    document.registerElement("alg-return");
+    document.registerElement("alg-step");
+    document.registerElement("alg-call");
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");

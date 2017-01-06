@@ -10,8 +10,14 @@
         <script src="algotype.js"></script>
         <p>This is the first paragraph.This is the first paragraph.This is the first paragraph.</p>
         <p align="center">
-            <alg-algorithm name="FunkySort" parameter-list=" ( x , Q ,A, R,T  " comment="A very funky sorting algorithm right here">
-                
+            <alg-algorithm name="FunkySort" parameters="x Q A R" comment="A very funky sorting algorithm right here">
+                <alg-foreach condition="y \in Q">
+                    <alg-step>$y' = $ <alg-call name="Merge" arg="y z"></alg-call></alg-step>
+                </alg-foreach>
+                <alg-foreach condition="x < 10">
+                    <alg-step>$x \leftarrow x + 10$</alg-step>
+                </alg-foreach>
+                <alg-return>10</alg-return>
             </alg-algorithm>
         </p>
         <p>This is the last paragraph.This is the last paragraph.This is the last paragraph.This is the last paragraph.</p>
