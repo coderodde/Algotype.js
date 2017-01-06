@@ -138,9 +138,7 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     return tex + ")$";
 };
 
-Algotype.typesetForEach = function(forEachElement,
-                                   lineNumber, 
-                                   indentation) {
+Algotype.typesetForEach = function(forEachElement, state) {
     var conditionTeX = forEachElement.getAttribute("condition") || "";
     conditionTeX = conditionTeX.trim();
     
@@ -152,8 +150,28 @@ Algotype.typesetForEach = function(forEachElement,
         conditionTeX += "$";
     }
     
-    var htmlText = "<span>" + lineNumber["value"] + "</span>";
-    htmlText += "<span>" + "for each " + conditionTeX + "</span><br/>";
+    var htmlText = "<span style='align: left;'>" +
+                   state["lineNumber"] + 
+                   "</span>";
+           
+    htmlText += "<span class='algotype-text algotype-keyword' " + 
+                "style='margin-left: " + (40 * state["indentation"]) + "px;'" +
+                ">for each</span>" + conditionTeX + ":<br/>";
+    state["lineNumber"]++;
+    state["indentation"]++;
+    
+    var childElements = forEachElement.children;
+    
+    for (var i = 0; i < childElements.length; ++i) {
+        var elementName = childElements[i].tagName.toLowerCase();
+        
+        switch (elementName) {
+            case "alg-foreach":
+                htmlText += Algotype.typesetForEach(childElements[i], state);
+                break;
+        }
+    }
+    
     return htmlText;
 };
 
@@ -177,17 +195,17 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     
     var childElements = algorithmElement.children;
     
-    var lineNumber = {value: 1};
-    var indentation = {value: 0};
+    var state = {
+        lineNumber: 1,
+        indentation: 0
+    };
     
     for (var i = 0; i < childElements.length; ++i) {
         var elementName = childElements[i].tagName.toLowerCase();
         
         switch (elementName) {
             case "alg-foreach":
-                htmlText += Algotype.typesetForEach(childElements[i],
-                                                    lineNumber,
-                                                    indentation);
+                htmlText += Algotype.typesetForEach(childElements[i], state);
                 break;
                 
             case "alg-return":
@@ -195,9 +213,11 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
                
         }
     }
-    alert("yeah: ");
-    alert(htmlText);
-    parentNode.innerHTML += htmlText;
+    
+    var paragraphElement = document.createElement("p");
+    paragraphElement.style.textAlign = "left";
+    paragraphElement.innerHTML = htmlText;
+    parentNode.appendChild(paragraphElement);
 };
 
 Algotype.setup = function() {

@@ -7,6 +7,10 @@ alg-algorithm {
     font-size: 18px;
 }
 
+.algotype-keyword {
+    font-weight: bold;
+}
+
 .algotype-algorithm-name {
     font-variant: small-caps;
     font-weight: bolder;
