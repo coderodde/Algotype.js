@@ -57,44 +57,6 @@ Algotype.loadMathJax = function() {
     document.head.appendChild(mathJaxSettingsScript);
 };
 
-Algotype.getAlgorithmParameterElements = function(algorithmElement) {
-    var algorithmParameterElementList = [];
-    var childElements = algorithmElement.childNodes;
-    
-    for (var i = 0; i < childElements.length; ++i) {
-        var currentChildElement = childElements[i];
-        
-        if (currentChildElement.nodeName.toLowerCase() === "alg-parameter") {
-            algorithmParameterElementList.push(currentChildElement);
-        }
-    }
-    
-    return algorithmParameterElementList;
-};
-
-Algotype.getParameterNames = function(algorithmParameterElements) {
-    var parameterNameList = [];
-    
-    for (var i = 0; i < algorithmParameterElements.length; ++i) {
-        parameterNameList.push(algorithmParameterElements[i].innerHTML);
-    }
-    
-    return parameterNameList;
-};
-
-Algotype.getParameterListText = function(algorithmParameterNames) {
-    var str = "(";
-    var separator = "";
-    
-    for (var i = 0; i < algorithmParameterNames.length; ++i) {
-        str += separator;
-        str += algorithmParameterNames[i];
-        separator = ", ";
-    }
-    
-    return str + ")";
-};
-
 Algotype.getAlgorithmHeaderComment = function (algorithmElement) {
     var algorithmHeaderComment = 
             algorithmElement.getAttribute("comment");
@@ -149,6 +111,64 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     return tex + ")$";
 };
 
+Algotype.typesetStep = function(stepElement, state) {
+    var stepText = stepElement.innerHTML;
+    var inTeX = false;
+    var inCall = false;
+    var htmlText = "";
+    var call = "";
+    var previousCharacter = "";
+    
+    for (var i = 0; i < stepText.length; ++i) {
+        var character = stepText[i];
+        
+        switch (character) {
+            case '$':
+                if (!inTeX) {
+                    htmlText += "<b>" + call + "</b>";
+                    inTeX = true;
+                } else {
+                    inTeX = false;
+                }
+                
+                htmlText += "$";
+                break;
+               
+            default:
+                
+                if (inTeX) {
+                    htmlText += character;
+                } else {
+                    call += character;
+                }
+        }
+        
+        previousCharacter = character;
+    }
+    
+    alert("step: " + htmlText);
+    
+    htmlText = "<table class='algotype-code-row-table'>\n" + 
+               "<tbody class='algotype-code-row-tbody'>\n" +
+               "<tr class='algotype-algorithm-line'>\n" +
+               "<td class='algotype-algorithm-line-number'>" +
+               state["lineNumber"] +
+               "</td> " +
+               "<td class='algorithm-line-number-space' width='" +
+               (Algotype.INDENTATION_WIDTH * state["indentation"] +
+                Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+               "px'>" +
+               "</td> " +
+               "<td>" + 
+               htmlText +
+               "</td> " +
+               "</tr>\n" +
+               "</tbody>\n" +
+               "</table>\n";
+       
+    return htmlText;
+};
+
 Algotype.typesetForEach = function(forEachElement, state) {
     var conditionTeX = forEachElement.getAttribute("condition") || "";
     conditionTeX = conditionTeX.trim();
@@ -192,6 +212,10 @@ Algotype.typesetForEach = function(forEachElement, state) {
         switch (elementName) {
             case "alg-foreach":
                 htmlText += Algotype.typesetForEach(childElements[i], state);
+                break;
+                
+            case "alg-step":
+                htmlText += Algotype.typesetStep(childElements[i], state);
                 break;
         }
     }
