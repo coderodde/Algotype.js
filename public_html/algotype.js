@@ -125,7 +125,17 @@ Algotype.typesetStep = function(stepElement, state) {
         switch (character) {
             case '$':
                 if (!inTeX) {
-                    htmlText += "<b>" + call + "</b>";
+                    if (call) {
+                        // Dump the current call.
+                        htmlText += 
+                            " <span " + 
+                            "class='algotype-text algotype-algorithm-name'>" + 
+                            call + 
+                            "</span> ";
+                    
+                        call = "";
+                    }
+                    
                     inTeX = true;
                 } else {
                     inTeX = false;
@@ -146,8 +156,6 @@ Algotype.typesetStep = function(stepElement, state) {
         previousCharacter = character;
     }
     
-    alert("step: " + htmlText);
-    
     htmlText = "<table class='algotype-code-row-table'>\n" + 
                "<tbody class='algotype-code-row-tbody'>\n" +
                "<tr class='algotype-algorithm-line'>\n" +
@@ -166,6 +174,7 @@ Algotype.typesetStep = function(stepElement, state) {
                "</tbody>\n" +
                "</table>\n";
        
+    state["lineNumber"]++;
     return htmlText;
 };
 
