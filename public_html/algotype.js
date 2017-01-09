@@ -111,13 +111,11 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     return tex + ")$";
 };
 
-Algotype.typesetStep = function(stepElement, state) {
+Algotype.typesetStep = function(stepElement, state, isReturn) {
     var stepText = stepElement.innerHTML;
     var inTeX = false;
-    var inCall = false;
     var htmlText = "";
     var call = "";
-    var previousCharacter = "";
     
     for (var i = 0; i < stepText.length; ++i) {
         var character = stepText[i];
@@ -152,30 +150,39 @@ Algotype.typesetStep = function(stepElement, state) {
                     call += character;
                 }
         }
-        
-        previousCharacter = character;
+    }
+    
+    var returnHtml = "";
+    
+    if (isReturn === true) {
+        returnHtml = "<span class='algotype-text algotype-keyword'>" +
+                     "return</span> ";
     }
     
     htmlText = "<table class='algotype-code-row-table'>\n" + 
-               "<tbody class='algotype-code-row-tbody'>\n" +
-               "<tr class='algotype-algorithm-line'>\n" +
-               "<td class='algotype-algorithm-line-number'>" +
+               "  <tbody class='algotype-code-row-tbody'>\n" +
+               "    <tr class='algotype-algorithm-line'>\n" +
+               "      <td class='algotype-algorithm-line-number'>" +
                state["lineNumber"] +
                "</td> " +
                "<td class='algorithm-line-number-space' width='" +
                (Algotype.INDENTATION_WIDTH * state["indentation"] +
                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-               "px'>" +
-               "</td> " +
+               "px'></td>" +
                "<td>" + 
+               (isReturn ? returnHtml : "") +
                htmlText +
-               "</td> " +
-               "</tr>\n" +
-               "</tbody>\n" +
+               "</td>\n" +
+               "    </tr>\n" +
+               "  </tbody>\n" +
                "</table>\n";
        
     state["lineNumber"]++;
     return htmlText;
+};
+
+Algotype.typesetReturn = function(returnElement, state) {
+    return Algotype.typesetStep(returnElement, state, true);
 };
 
 Algotype.typesetForEach = function(forEachElement, state) {
@@ -190,23 +197,44 @@ Algotype.typesetForEach = function(forEachElement, state) {
         conditionTeX += "$";
     }
     
-    var htmlText = "<table class='algotype-code-row-table'>\n" +
-                   "<tbody class='algotype-code-row-tbody'>\n" +
-                   "<tr class='algotype-algorithm-line'>\n" +
-                   "<td class='algotype-algorithm-line-number'>" +
-                   state["lineNumber"] +
-                   "</td> " +
-                   "<td class='algorithm-line-number-space' width='" + 
-                   (Algotype.INDENTATION_WIDTH * state["indentation"] + 
-                    Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
-                   "px'>" +
-                   "</td> " +
-                   "<td class='algotype-text algotype-keyword'>for each " + 
-                   conditionTeX + 
-                   ":</td> " +
-                   "</tr>\n" +
-                   "</tbody>\n" +
-                   "</table>\n";
+    var label = forEachElement.getAttribute("label");
+    var htmlText = "";
+    
+    if (label) {
+        if (label[label.length - 1] !== ":") {
+            label += ":";
+        }
+        
+        htmlText += "<table class='algotype-code-row-table'>\n" +
+                    "  <tbody class='algotype-code-row-tbody'\n" +
+                    "    <tr class='algotype-algorithm-line'>\n" +
+                    "      <td class='algotype-algorithm-line-number'></td>\n" +
+                    "      <td class='algorithm-line-number-space' width='" + 
+                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
+                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+                    "px'></td>\n" + 
+                    "      <td class='algotype-label'>" + label + "</td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody>\n" +
+                    "</table>\n";
+    }
+    
+    htmlText += "<table class='algotype-code-row-table'>\n" +
+                "  <tbody class='algotype-code-row-tbody'>\n" +
+                "    <tr class='algotype-algorithm-line'>\n" +
+                "      <td class='algotype-algorithm-line-number'>" +
+                state["lineNumber"] +
+                "      </td> " +
+                "      <td class='algorithm-line-number-space' width='" + 
+                (Algotype.INDENTATION_WIDTH * state["indentation"] + 
+                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
+                "px'></td>\n" +
+                "      <td class='algotype-text algotype-keyword'>for each " + 
+                conditionTeX + 
+                ":</td> " +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n";
         
     var saveIndentation = state["indentation"];
     
@@ -225,6 +253,10 @@ Algotype.typesetForEach = function(forEachElement, state) {
                 
             case "alg-step":
                 htmlText += Algotype.typesetStep(childElements[i], state);
+                break;
+                
+            case "alg-return":
+                htmlText += Algotype.typesetReturn(childElements[i], state);
                 break;
         }
     }
@@ -268,6 +300,7 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
                 break;
                 
             case "alg-return":
+                htmlText += Algotype.typesetReturn(childElements[i], state);
                 break;
                
         }
@@ -288,7 +321,6 @@ Algotype.setup = function() {
     document.registerElement("alg-foreach");
     document.registerElement("alg-return");
     document.registerElement("alg-step");
-    document.registerElement("alg-call");
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");

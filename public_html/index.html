@@ -11,30 +11,18 @@
         <p>This is the first paragraph.This is the first paragraph.This is the first paragraph.</p>
         <div align="center" style="width: 50%; margin-left: auto; margin-right: auto;">
             <alg-algorithm name="Funky-Sort" parameters="x Q A R" comment="A very funky sorting algorithm right here">
-                <alg-foreach condition="y \in Q">
+                <alg-foreach condition="y \in Q" label="outer_loop">
                     <alg-foreach condition="x \in Q">
                         <alg-step>$z \leftarrow x + y$</alg-step>
                     </alg-foreach>
-                    <alg-step>$y' = $Fuck-Yeah$(x, y)\; +$Come-On-Baby$(Q)$</alg-step>
+                    <alg-step>$y' =$ Fuck-Yeah$(x, y) \, + $ Come-On-Baby$(Q)$</alg-step>
                 </alg-foreach>
                 <alg-foreach condition="$n \in \mathbb{N}$">
                     
                 </alg-foreach>
-                <alg-return>10</alg-return>
+                <alg-return>$10 + xy + \log z \; - $ Call-Aux-On-Baby$(x, Q, R)$</alg-return>
             </alg-algorithm>
         </div>
         <p>This is the last paragraph.This is the last paragraph.This is the last paragraph.This is the last paragraph.</p>
-        <span class="algotype-text algotype-algorithm-name">Funky-Yeah</span>$(x, y, z)$<br>
-        <table class="algotype-code-row-table">
-            <tbody class="algotype-code-row-tbody">
-                <tr class="algotype-algorithm-line">
-                    <td class="algotype-algorithm-line-number">11</td>
-                    <td class="algorithm-line-number-space" width="33px"></td>
-                    <td>
-                        <span class="algotype-text algotype-algorithm-name">Funky-Yeah</span>$(x, y, z)$
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </body>
 </html>
