@@ -131,7 +131,7 @@ Algotype.typesetStep = function(stepElement, state) {
                             " <span " + 
                             "class='algotype-text algotype-algorithm-name'>" + 
                             call + 
-                            "</span> ";
+                            "</span>";
                     
                         call = "";
                     }
