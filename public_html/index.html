@@ -14,6 +14,7 @@
                 <alg-foreach condition="y \in Q" label="outer_loop">
                     <alg-foreach condition="x \in Q">
                         <alg-step>$z \leftarrow x + y$</alg-step>
+                        <alg-break>outer_loop</alg-break>
                     </alg-foreach>
                     <alg-step>$y' =$ Fuck-Yeah$(x, y) \, + $ Come-On-Baby$(Q)$</alg-step>
                 </alg-foreach>

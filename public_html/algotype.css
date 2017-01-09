@@ -60,5 +60,7 @@ td.algorithm-line-number-space {
 }
 
 .algotype-label {
+    font-size: 14px;
     font-family: monospace;
+    font-weight: normal;
 }

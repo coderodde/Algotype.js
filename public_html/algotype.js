@@ -185,6 +185,31 @@ Algotype.typesetReturn = function(returnElement, state) {
     return Algotype.typesetStep(returnElement, state, true);
 };
 
+Algotype.typesetBreak = function(breakElement, state) {
+    var label = breakElement.innerHTML;
+    
+    var htmlText = 
+            "<table class='algotype-code-row-table'>\n" +
+            "  <tbody class='algotype-code-row-tbody'>\n" +
+            "    <tr class='algotype-algorithm-line'>\n" +
+            "      <td class='algotype-algorithm-line-number'>" +
+            state["lineNumber"] + "</td>\n" +
+            "      <td class='algorithm-line-number-space' width='" +
+            (Algotype.INDENTATION_WIDTH * state["indentation"] +
+             Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+            "px'></td>\n" +
+            "      <td class='algotype-text algotype-keyword'>break " +
+            (label ? "<span class='algotype-label'>" + label + "</span>" : "") +
+            "</td>\n" +
+            "    </tr>\n" +
+            "  </tbody>\n" +
+            "</table>\n";
+    
+    
+    state["lineNumber"]++;
+    return htmlText;
+};
+
 Algotype.typesetForEach = function(forEachElement, state) {
     var conditionTeX = forEachElement.getAttribute("condition") || "";
     conditionTeX = conditionTeX.trim();
@@ -258,6 +283,10 @@ Algotype.typesetForEach = function(forEachElement, state) {
             case "alg-return":
                 htmlText += Algotype.typesetReturn(childElements[i], state);
                 break;
+                
+            case "alg-break":
+                htmlText += Algotype.typesetBreak(childElements[i], state);
+                break;
         }
     }
     
@@ -303,6 +332,9 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
                 htmlText += Algotype.typesetReturn(childElements[i], state);
                 break;
                
+            case "alg-break":
+                htmlText += Algotype.typesetBreak(childElements[i], state);
+                break;
         }
     }
     
