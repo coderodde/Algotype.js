@@ -1,3 +1,7 @@
+//// ////////////////////////////////////////////////////// ////
+ // Algotype.js, version 1.6 by Rodion "(code)rodde" Efremov // 
+////////////////////////////////////////////////////////////////
+
 var Algotype = {};
 
 // The string beginning the comments of the algorithm declaration.
@@ -113,15 +117,6 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
 
 Algotype.typesetStep = function(stepElement, state, isReturn) {
     var stepText = (stepElement.innerHTML || "").trim();
-    
-    if (stepText[0] !== "$") {
-        stepText = "$" + stepText;
-    }
-    
-    if (stepText[stepText.length - 1] !== "$") {
-        stepText += "$";
-    }
-    
     var inTeX = false;
     var htmlText = "";
     var call = "";
@@ -262,7 +257,8 @@ Algotype.typesetForEach = function(forEachElement, state) {
                     (Algotype.INDENTATION_WIDTH * state["indentation"] +
                      Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
                     "px'></td>\n" + 
-                    "      <td class='algotype-label algotype-text'>" + label + "</td>\n" +
+                    "      <td class='algotype-label algotype-text'>" + label + 
+                    "</td>\n" +
                     "    </tr>\n" +
                     "  </tbody>\n" +
                     "</table>\n";
@@ -501,6 +497,183 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
     state["lineNumber"]++;
     state["indentation"]++;
     var childElements = forDowntoElement.children;
+    
+    for (var i = 0; i < childElements.length; ++i) {
+        var elementName = childElements[i].tagName.toLowerCase();
+        var handlerFunction = Algotype.dispatchTable[elementName];
+        
+        if (handlerFunction) {
+            htmlText += handlerFunction(childElements[i], state);
+        } else {
+            throw new Error("Unknown element: '" + elementName + "'.");
+        }
+    }
+    
+    // Reset the indentation counter.
+    state["indentation"] = saveIndentation;
+    return htmlText;
+};
+
+function getLabelRowHtml(label) {
+    return "<table class='algotype-code-row-table'>\n" +
+           "  <tbody class='algotype-code-row-tbody'\n" +
+           "    <tr class='algotype-algorithm-line'>\n" +
+           "      <td class='algotype-algorithm-line-number'></td>\n" +
+           "      <td class='algorithm-line-number-space' width='" + 
+           (Algotype.INDENTATION_WIDTH * state["indentation"] +
+            Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+           "px'></td>\n" + 
+           "      <td class='algotype-label algotype-text'>" + label +
+           "</td>\n" +
+           "    </tr>\n" +
+           "  </tbody>\n" +
+           "</table>\n";
+}
+
+Algotype.typesetForever = function(foreverElement, state) {
+    var label = foreverElement.getAttribute("label");
+    var htmlText = "";
+    var comment = foreverElement.getAttribute("comment");
+    var commentId = foreverElement.getAttribute("comment-id");
+    var idText = "";
+    
+    if (commentId) {
+        idText = "id='" + commentId + "' ";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment' " + idText + ">" +
+                Algotype.ALGORITHM_STEP_COMMENT_TAG + " " +
+                comment.trim() + "</span>";
+    }
+    
+    if (label) {
+        label = label.trim();
+        
+        if (label[label.length - 1] !== ":") {
+            label += ":";
+        }
+        
+        htmlText += getLabelRowHtml(label);
+    }
+    
+    htmlText += "<table class='algotype-code-row-table'>\n" +
+                "  <tbody class='algotype-code-row-tbody'>\n" +
+                "    <tr class='algotype-algorithm-line'>\n" +
+                "      <td class='algotype-algorithm-line-number'>" +
+                state["lineNumber"] +
+                "      </td> " +
+                "      <td class='algorithm-line-number-space' width='" + 
+                (Algotype.INDENTATION_WIDTH * state["indentation"] + 
+                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
+                "px'></td>\n" +
+                "      <td class='algotype-text algotype-keyword'>forever:" + 
+                (comment ? comment : "") +
+                "      </td> " +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n";
+        
+    var saveIndentation = state["indentation"];
+    
+    state["lineNumber"]++;
+    state["indentation"]++;
+    
+    var childElements = foreverElement.children;
+    
+    for (var i = 0; i < childElements.length; ++i) {
+        var elementName = childElements[i].tagName.toLowerCase();
+        var handlerFunction = Algotype.dispatchTable[elementName];
+        
+        if (handlerFunction) {
+            htmlText += handlerFunction(childElements[i], state);
+        } else {
+            throw new Error("Unknown element: '" + elementName + "'.");
+        }
+    }
+    
+    // Reset the indentation counter.
+    state["indentation"] = saveIndentation;   
+    return htmlText;
+};
+
+Algotype.typesetWhile = function(whileElement, state) {
+    var conditionTeX = (whileElement.getAttribute("condition") || "").trim();
+    
+    conditionTeX = addTeXDelimeters(conditionTeX);
+    
+    var label = whileElement.getAttribute("label");
+    var htmlText = "";
+    var comment = whileElement.getAttribute("comment");
+    var commentId = whileElement.getAttribute("comment-id");
+    var idText = "";
+    
+    if (commentId) {
+        idText = " id='" + commentId + "' ";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment' " + idText + ">" +
+                  Algotype.ALGORITHM_STEP_COMMENT_TAG + " " + 
+                  comment.trim() + "</span>";
+    }
+    
+    if (label) {
+        label = label.trim();
+        
+        if (label[label.length - 1] !== ":") {
+            label += ":";
+        }
+        
+        htmlText += "<table class='algotype-code-row-table'>\n" +
+                    "  <tbody class='algotype-code-row-tbody'\n" +
+                    "    <tr class='algotype-algorithm-line'>\n" +
+                    "      <td class='algotype-algorithm-line-number'></td>\n" +
+                    "      <td class='algorithm-line-number-space' width='" + 
+                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
+                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+                    "px'></td>\n" + 
+                    "      <td class='algotype-label algotype-text'>" + label + 
+                    "</td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody>\n" +
+                    "</table>\n";
+    }
+    
+    var whileId = whileElement.getAttribute("id");
+    var whileIdTextBegin = "";
+    var whileIdTextEnd = "";
+    
+    if (whileId) {
+        whileIdTextBegin = "<span id='" + whileId + "'>";
+        whileIdTextEnd = "</span>";
+    }
+    
+    htmlText += "<table class='algotype-code-row-table'>\n" +
+                "  <tbody class='algotype-code-row-tbody'>\n" +
+                "    <tr class='algotype-algorithm-line'>\n" +
+                "      <td class='algotype-algorithm-line-number'>" +
+                state["lineNumber"] +
+                "      </td> " +
+                "      <td class='algorithm-line-number-space' width='" + 
+                (Algotype.INDENTATION_WIDTH * state["indentation"] + 
+                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
+                "px'></td>\n" +
+                "      <td class='algotype-text algotype-keyword'>" +
+                whileIdTextBegin + "while " + 
+                conditionTeX + ":" + whileIdTextEnd + 
+                (comment ? comment : "") +
+                "      </td> " +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n";
+        
+    var saveIndentation = state["indentation"];
+    
+    state["lineNumber"]++;
+    state["indentation"]++;
+    
+    var childElements = whileElement.children;
     
     for (var i = 0; i < childElements.length; ++i) {
         var elementName = childElements[i].tagName.toLowerCase();
