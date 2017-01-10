@@ -270,23 +270,12 @@ Algotype.typesetForEach = function(forEachElement, state) {
     
     for (var i = 0; i < childElements.length; ++i) {
         var elementName = childElements[i].tagName.toLowerCase();
+        var handlerFunction = Algotype.dispatchTable[elementName];
         
-        switch (elementName) {
-            case "alg-foreach":
-                htmlText += Algotype.typesetForEach(childElements[i], state);
-                break;
-                
-            case "alg-step":
-                htmlText += Algotype.typesetStep(childElements[i], state);
-                break;
-                
-            case "alg-return":
-                htmlText += Algotype.typesetReturn(childElements[i], state);
-                break;
-                
-            case "alg-break":
-                htmlText += Algotype.typesetBreak(childElements[i], state);
-                break;
+        if (handlerFunction) {
+            htmlText += handlerFunction(childElements[i], state);
+        } else {
+            throw new Error("Unknown element: '" + elementName + "'.");
         }
     }
     
@@ -322,19 +311,12 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     
     for (var i = 0; i < childElements.length; ++i) {
         var elementName = childElements[i].tagName.toLowerCase();
+        var handlerFunction = Algotype.dispatchTable[elementName];
         
-        switch (elementName) {
-            case "alg-foreach":
-                htmlText += Algotype.typesetForEach(childElements[i], state);
-                break;
-                
-            case "alg-return":
-                htmlText += Algotype.typesetReturn(childElements[i], state);
-                break;
-               
-            case "alg-break":
-                htmlText += Algotype.typesetBreak(childElements[i], state);
-                break;
+        if (handlerFunction) {
+            htmlText += handlerFunction(childElements[i], state);
+        } else {
+            throw new Error("Unknown element: '" + elementName + "'.");
         }
     }
     
@@ -351,8 +333,16 @@ Algotype.setup = function() {
     // Create the Algotype.js specific tags.
     document.registerElement("alg-algorithm");
     document.registerElement("alg-foreach");
-    document.registerElement("alg-return");
+    document.registerElement("alg-for");
+    document.registerElement("alg-for-downto");
+    document.registerElement("alg-forever");
+    document.registerElement("alg-if");
+    document.registerElement("alg-elseif");
+    document.registerElement("alg-else");
     document.registerElement("alg-step");
+    document.registerElement("alg-return");
+    document.registerElement("alg-break");
+    document.registerElement("alg-continue");
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");
@@ -361,6 +351,20 @@ Algotype.setup = function() {
         Algotype.typesetAlgorithm(algorithmList[i]);
     }
 };
+
+Algotype.dispatchTable = {};
+
+Algotype.dispatchTable["alg-foreach"]    = Algotype.typesetForEach;
+Algotype.dispatchTable["alg-for"]        = Algotype.typesetFor;
+Algotype.dispatchTable["alg-for-downto"] = Algotype.typesetForDownto;
+Algotype.dispatchTable["alg-forever"]    = Algotype.typesetForever;
+Algotype.dispatchTable["alg-if"]         = Algotype.typesetIf;
+Algotype.dispatchTable["alg-else-if"]    = Algotype.typesetElseIf;
+Algotype.dispatchTable["alg-else"]       = Algotype.typesetElse;
+Algotype.dispatchTable["alg-step"]       = Algotype.typesetStep;
+Algotype.dispatchTable["alg-return"]     = Algotype.typesetReturn;
+Algotype.dispatchTable["alg-break"]      = Algotype.typesetBreak;
+Algotype.dispatchTable["alg-continue"]   = Algotype.typesetContinue;
 
 var oldOnloadHandler = window.onload;
 
