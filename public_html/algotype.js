@@ -4,7 +4,7 @@ var Algotype = {};
 Algotype.ALGORITHM_HEADER_COMMENT_TAG = "#";
 
 // The string beginning the step comments. 
-Algotype.ALGORITHM_STEP_COMMENT_TAG = "##";
+Algotype.ALGORITHM_STEP_COMMENT_TAG = "//";
 
 // The width of code line numbers. This default works well. If you, however, 
 // need to typeset an algorithm with at least 100 rows (in which case the space
@@ -169,7 +169,7 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
                (Algotype.INDENTATION_WIDTH * state["indentation"] +
                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
                "px'></td>" +
-               "<td>" + 
+               "<td class='algotype-text'>" + 
                (isReturn ? returnHtml : "") +
                htmlText +
                "</td>\n" +
@@ -224,8 +224,23 @@ Algotype.typesetForEach = function(forEachElement, state) {
     
     var label = forEachElement.getAttribute("label");
     var htmlText = "";
+    var comment = forEachElement.getAttribute("comment");
+    var commentId = forEachElement.getAttribute("comment-id");
+    var idText = "";
+    
+    if (commentId) {
+        idText = " id='" + commentId + "' ";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment' " + idText + ">" + 
+                Algotype.ALGORITHM_STEP_COMMENT_TAG + " " +
+                comment.trim() + "</span>";
+    }
     
     if (label) {
+        label = label.trim();
+        
         if (label[label.length - 1] !== ":") {
             label += ":";
         }
@@ -238,7 +253,7 @@ Algotype.typesetForEach = function(forEachElement, state) {
                     (Algotype.INDENTATION_WIDTH * state["indentation"] +
                      Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
                     "px'></td>\n" + 
-                    "      <td class='algotype-label'>" + label + "</td>\n" +
+                    "      <td class='algotype-label algotype-text'>" + label + "</td>\n" +
                     "    </tr>\n" +
                     "  </tbody>\n" +
                     "</table>\n";
@@ -255,8 +270,9 @@ Algotype.typesetForEach = function(forEachElement, state) {
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
                 "      <td class='algotype-text algotype-keyword'>for each " + 
-                conditionTeX + 
-                ":</td> " +
+                conditionTeX + ":" + 
+                (comment ? comment : "") +
+                "      </td> " +
                 "    </tr>\n" +
                 "  </tbody>\n" +
                 "</table>\n";
@@ -298,9 +314,9 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     var htmlText = 
             "<span class='algotype-text algotype-algorithm-name'>" +
             algorithmName +
-            "</span>" + algorithmParameterList + 
+            "</span><span class='algotype-text'>" + algorithmParameterList + 
             commentText +
-            "<br/>";
+            "</span><br/>";
     
     var childElements = algorithmElement.children;
     

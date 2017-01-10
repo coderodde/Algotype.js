@@ -5,6 +5,7 @@ alg-algorithm {
 .algotype-text {
     font-family: Times New Roman;
     font-size: 18px;
+    color: grey;
 }
 
 .algotype-keyword {
@@ -63,4 +64,19 @@ td.algorithm-line-number-space {
     font-size: 14px;
     font-family: monospace;
     font-weight: normal;
+}
+
+.algotype-step-comment {
+    font-family: Times New Roman;
+    font-size: 18px;
+    font-weight: normal;
+    font-variant: normal;
+}
+
+#outer_loop_comment_id {
+    color: yellow;
+}
+
+#my_outer_foreach {
+    color: brown;
 }

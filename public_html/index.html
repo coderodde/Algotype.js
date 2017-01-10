@@ -11,7 +11,7 @@
         <p>This is the first paragraph.This is the first paragraph.This is the first paragraph.</p>
         <div align="center" style="width: 50%; margin-left: auto; margin-right: auto;">
             <alg-algorithm name="Funky-Sort" parameters="x Q A R" comment="A very funky sorting algorithm right here">
-                <alg-foreach condition="y \in Q" label="outer_loop">
+                <alg-foreach id="my_outer_foreach" condition="y \in Q" label="outer_loop" comment="Outer loop" comment-id="outer_loop_comment_id">
                     <alg-foreach condition="x \in Q">
                         <alg-step>$z \leftarrow x + y$</alg-step>
                         <alg-break>outer_loop</alg-break>
