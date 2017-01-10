@@ -112,7 +112,16 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
 };
 
 Algotype.typesetStep = function(stepElement, state, isReturn) {
-    var stepText = stepElement.innerHTML;
+    var stepText = (stepElement.innerHTML || "").trim();
+    
+    if (stepText[0] !== "$") {
+        stepText = "$" + stepText;
+    }
+    
+    if (stepText[stepText.length - 1] !== "$") {
+        stepText += "$";
+    }
+    
     var inTeX = false;
     var htmlText = "";
     var call = "";
@@ -259,6 +268,15 @@ Algotype.typesetForEach = function(forEachElement, state) {
                     "</table>\n";
     }
     
+    var forEachId = forEachElement.getAttribute("id");
+    var forEachIdTextBegin = "";
+    var forEachIdTextEnd = "";
+    
+    if (forEachId) {
+        forEachIdTextBegin = "<span id='" + forEachId +"'>";
+        forEachIdTextEnd = "</span>";
+    }
+    
     htmlText += "<table class='algotype-code-row-table'>\n" +
                 "  <tbody class='algotype-code-row-tbody'>\n" +
                 "    <tr class='algotype-algorithm-line'>\n" +
@@ -269,8 +287,9 @@ Algotype.typesetForEach = function(forEachElement, state) {
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
-                "      <td class='algotype-text algotype-keyword'>for each " + 
-                conditionTeX + ":" + 
+                "      <td class='algotype-text algotype-keyword'>" +
+                forEachIdTextBegin + "for each " + 
+                conditionTeX + ":" + forEachIdTextEnd + 
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
@@ -283,6 +302,205 @@ Algotype.typesetForEach = function(forEachElement, state) {
     state["indentation"]++;
     
     var childElements = forEachElement.children;
+    
+    for (var i = 0; i < childElements.length; ++i) {
+        var elementName = childElements[i].tagName.toLowerCase();
+        var handlerFunction = Algotype.dispatchTable[elementName];
+        
+        if (handlerFunction) {
+            htmlText += handlerFunction(childElements[i], state);
+        } else {
+            throw new Error("Unknown element: '" + elementName + "'.");
+        }
+    }
+    
+    // Reset the indentation counter.
+    state["indentation"] = saveIndentation;
+    return htmlText;
+};
+
+function addTeXDelimeters(code) {
+    code = code.trim();
+    
+    if (code[0] !== "$") {
+        code = "$\\; " + code;
+    }
+    
+    if (code[code.length - 1] !== "$") {
+        code += "$";
+    }
+    
+    return code;
+}
+
+Algotype.typesetFor = function(forElement, state) {
+    var initConditionTeX = forElement.getAttribute("init") || "";
+    var toConditionTeX = forElement.getAttribute("to") || "";
+    var stepConditionTeX = forElement.getAttribute("step") || "";
+    
+    initConditionTeX = addTeXDelimeters(initConditionTeX);
+    toConditionTeX = addTeXDelimeters(toConditionTeX);
+    stepConditionTeX = addTeXDelimeters(stepConditionTeX);
+    
+    var label = forElement.getAttribute("label");
+    var htmlText = "";
+    var comment = forElement.getAttribute("comment");
+    var commentId = forElement.getAttribute("comment-id");
+    var idText = "";
+    var stepText = "";
+    
+    if (stepConditionTeX) {
+        stepText = " step " + stepConditionTeX;
+    }
+    
+    if (commentId) {
+        idText = "id='" + commentId + "' ";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment' " + idText + ">" +
+                Algotype.ALGORITHM_STEP_COMMENT_TAG + " " +
+                comment.trim() + "</span>";
+    }
+    
+    if (label) {
+        label = label.trim();
+        
+        if (label[label.length - 1] !== ":") {
+            label += ":";
+        }
+        
+        htmlText += "<table class='algotype-code-row-table'>\n" +
+                    "  <tbody class='algotype-code-row-tbody'\n" +
+                    "    <tr class='algotype-algorithm-line'>\n" +
+                    "      <td class='algotype-algorithm-line-number'></td>\n" +
+                    "      <td class='algorithm-line-number-space' width='" + 
+                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
+                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+                    "px'></td>\n" + 
+                    "      <td class='algotype-label algotype-text'>" + label +
+                    "</td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody>\n" +
+                    "</table>\n";
+    }
+    
+    htmlText += "<table class='algotype-code-row-table'>\n" +
+                "  <tbody class='algotype-code-row-tbody'>\n" +
+                "    <tr class='algotype-algorithm-line'>\n" +
+                "      <td class='algotype-algorithm-line-number'>" +
+                state["lineNumber"] +
+                "      </td> " +
+                "      <td class='algorithm-line-number-space' width='" + 
+                (Algotype.INDENTATION_WIDTH * state["indentation"] + 
+                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
+                "px'></td>\n" +
+                "      <td class='algotype-text algotype-keyword'>for " + 
+                initConditionTeX + " to " + toConditionTeX + stepText + ":" + 
+                (comment ? comment : "") +
+                "      </td> " +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n";
+        
+    var saveIndentation = state["indentation"];
+    
+    state["lineNumber"]++;
+    state["indentation"]++;
+    
+    var childElements = forElement.children;
+    
+    for (var i = 0; i < childElements.length; ++i) {
+        var elementName = childElements[i].tagName.toLowerCase();
+        var handlerFunction = Algotype.dispatchTable[elementName];
+        
+        if (handlerFunction) {
+            htmlText += handlerFunction(childElements[i], state);
+        } else {
+            throw new Error("Unknown element: '" + elementName + "'.");
+        }
+    }
+    
+    // Reset the indentation counter.
+    state["indentation"] = saveIndentation;
+    return htmlText;
+};
+
+Algotype.typesetForDownto = function(forDowntoElement, state) {
+    var initConditionTeX = forDowntoElement.getAttribute("init") || "";
+    var toConditionTeX   = forDowntoElement.getAttribute("to")   || "";
+    var stepConditionTeX = forDowntoElement.getAttribute("step") || "";
+    
+    initConditionTeX = addTeXDelimeters(initConditionTeX);
+    toConditionTeX   = addTeXDelimeters(toConditionTeX);
+    stepConditionTeX = addTeXDelimeters(stepConditionTeX);
+    
+    var label = forDowntoElement.getAttribute("label");
+    var htmlText = "";
+    var comment = forDowntoElement.getAttribute("comment");
+    var commentId = forDowntoElement.getAttribute("comment-id");
+    var idText = "";
+    var stepText = "";
+    
+    if (stepConditionTeX) {
+        stepText = " step " + stepConditionTeX;
+    }
+    
+    if (commentId) {
+        idText = "id='" + commentId + "' ";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment' " + idText + ">" +
+                  Algotype.ALGORITHM_STEP_COMMENT_TAG + " " +
+                  comment.trim() + "</span>";
+    }
+    
+    if (label) {
+        label = label.trim();
+        
+        if (label[label.length - 1] !== ":") {
+            label += ":";
+        }
+        
+        htmlText += "<table class='algotype-code-row-table'>\n" +
+                    "  <tbody class='algotype-code-row-tbody'\n" +
+                    "    <tr class='algotype-algorithm-line'>\n" +
+                    "      <td class='algotype-algorithm-line-number'></td>\n" +
+                    "      <td class='algorithm-line-number-space' width='" + 
+                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
+                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+                    "px'></td>\n" + 
+                    "      <td class='algotype-label algotype-text'>" + label +
+                    "</td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody>\n" +
+                    "</table>\n"; 
+    }
+    
+    htmlText += "<table class='algotype-code-row-table'>\n" +
+                "  <tbody class='algotype-code-row-tbody'>\n" +
+                "    <tr class='algotype-algorithm-line'>\n" +
+                "      <td class='algotype-algorithm-line-number'>" +
+                state["lineNumber"] +
+                "      </td> " +
+                "      <td class='algorithm-line-number-space' width='" + 
+                (Algotype.INDENTATION_WIDTH * state["indentation"] + 
+                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
+                "px'></td>\n" +
+                "      <td class='algotype-text algotype-keyword'>for " + 
+                initConditionTeX + " downto " + toConditionTeX + stepText + 
+                ":" + (comment ? comment : "") +
+                "      </td> " +
+                "    </tr>\n" +
+                "  </tbody>\n" +
+                "</table>\n";
+        
+    var saveIndentation = state["indentation"];
+    
+    state["lineNumber"]++;
+    state["indentation"]++;
+    var childElements = forDowntoElement.children;
     
     for (var i = 0; i < childElements.length; ++i) {
         var elementName = childElements[i].tagName.toLowerCase();
@@ -370,17 +588,19 @@ Algotype.setup = function() {
 
 Algotype.dispatchTable = {};
 
-Algotype.dispatchTable["alg-foreach"]    = Algotype.typesetForEach;
-Algotype.dispatchTable["alg-for"]        = Algotype.typesetFor;
-Algotype.dispatchTable["alg-for-downto"] = Algotype.typesetForDownto;
-Algotype.dispatchTable["alg-forever"]    = Algotype.typesetForever;
-Algotype.dispatchTable["alg-if"]         = Algotype.typesetIf;
-Algotype.dispatchTable["alg-else-if"]    = Algotype.typesetElseIf;
-Algotype.dispatchTable["alg-else"]       = Algotype.typesetElse;
-Algotype.dispatchTable["alg-step"]       = Algotype.typesetStep;
-Algotype.dispatchTable["alg-return"]     = Algotype.typesetReturn;
-Algotype.dispatchTable["alg-break"]      = Algotype.typesetBreak;
-Algotype.dispatchTable["alg-continue"]   = Algotype.typesetContinue;
+Algotype.dispatchTable["alg-foreach"]      = Algotype.typesetForEach;
+Algotype.dispatchTable["alg-for"]          = Algotype.typesetFor;
+Algotype.dispatchTable["alg-for-downto"]   = Algotype.typesetForDownto;
+Algotype.dispatchTable["alg-forever"]      = Algotype.typesetForever;
+Algotype.dispatchTable["alg-while"]        = Algotype.typesetWhile;
+Algotype.dispatchTable["alg-repeat-until"] = Algotype.typesetRepeatUntil;
+Algotype.dispatchTable["alg-if"]           = Algotype.typesetIf;
+Algotype.dispatchTable["alg-else-if"]      = Algotype.typesetElseIf;
+Algotype.dispatchTable["alg-else"]         = Algotype.typesetElse;
+Algotype.dispatchTable["alg-step"]         = Algotype.typesetStep;
+Algotype.dispatchTable["alg-return"]       = Algotype.typesetReturn;
+Algotype.dispatchTable["alg-break"]        = Algotype.typesetBreak;
+Algotype.dispatchTable["alg-continue"]     = Algotype.typesetContinue;
 
 var oldOnloadHandler = window.onload;
 

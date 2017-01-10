@@ -12,14 +12,20 @@
         <div align="center" style="width: 50%; margin-left: auto; margin-right: auto;">
             <alg-algorithm name="Funky-Sort" parameters="x Q A R" comment="A very funky sorting algorithm right here">
                 <alg-foreach id="my_outer_foreach" condition="y \in Q" label="outer_loop" comment="Outer loop" comment-id="outer_loop_comment_id">
-                    <alg-foreach condition="x \in Q">
+                    <alg-foreach condition="z \in Q">
                         <alg-step>$z \leftarrow x + y$</alg-step>
                         <alg-break>outer_loop</alg-break>
                     </alg-foreach>
                     <alg-step>$y' =$ Fuck-Yeah$(x, y) \, + $ Come-On-Baby$(Q)$</alg-step>
+                    <alg-for init="i = 1" to="|A|" step="10 - i">
+                        <alg-step>a_i = i$</alg-step>
+                    </alg-for>
+                    <alg-for-downto init="j =10" to="1" step="2">
+                        <alg-step>$j + 1</alg-step>
+                    </alg-for-downto>
                 </alg-foreach>
                 <alg-foreach condition="$n \in \mathbb{N}$">
-                    
+                    <alg-step>Yeah$()$</alg-step>
                 </alg-foreach>
                 <alg-return>$10 + xy + \log z \; - $ Call-Aux-On-Baby$(x, Q, R)$</alg-return>
             </alg-algorithm>

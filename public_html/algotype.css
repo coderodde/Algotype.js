@@ -5,19 +5,11 @@ alg-algorithm {
 .algotype-text {
     font-family: Times New Roman;
     font-size: 18px;
-    color: grey;
+    color: #a22;
 }
 
 .algotype-keyword {
     font-weight: bold;
-}
-
-.remove-margin {
-    margin: 0 !important;
-}
-
-.remove-padding {
-    padding: 0 !important;
 }
 
 table.algotype-code-row-table {
@@ -47,6 +39,7 @@ td.algotype-algorithm-line-number {
     width: 20px;
     text-align: right;
     margin-bottom: -3px;
+    color: green;
 }
 
 td.algorithm-line-number-space {
@@ -78,5 +71,5 @@ td.algorithm-line-number-space {
 }
 
 #my_outer_foreach {
-    color: brown;
+    color: black;
 }
