@@ -40,13 +40,13 @@ td.algotype-algorithm-line-number {
     padding: 0;
     margin: 0;
     font-family: Times New Roman;
-    font-size: 18px;
+    font-size: 16px;
     width: 20px;
     text-align: right;
     margin-bottom: -3px;
 }
 
-td.algorithm-line-number-space {
+td.algotype-line-number-space {
     padding: 0;
     margin: 0;
     margin-bottom: -3px;

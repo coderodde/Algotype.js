@@ -17,24 +17,24 @@
                         <alg-break>outer_loop</alg-break>
                     </alg-foreach>
                     <alg-step>$y' =$ Fuck-Yeah$(x, y) \, + $ Come-On-Baby$(Q)$</alg-step>
-                    <alg-for init="i = 1" to="|A|" step="10 - i" label="int_for">
+                    <alg-for init="i = 1" to="|A|" step="10 - i">
                         <alg-step>$a_i = i$</alg-step>
                     </alg-for>
-                    <alg-for-downto init="j =10" to="1" step="2" label="downto_int_for">
+                    <alg-for-downto init="j =10" to="1" step="2">
                         <alg-step>Hello$(j + 1)$ + World$(|Q| + |A|)$</alg-step>
                     </alg-for-downto>
                 </alg-foreach>
                 <alg-foreach condition="$n \in \mathbb{N}$">
                     <alg-step>Yeah$(3)$</alg-step>
                 </alg-foreach>
-                <alg-forever label="infinity">
+                <alg-forever>
                     <alg-step>$1 + 2$</alg-step>
                 </alg-forever>
                 <alg-return>$10 + xy + \log z \; - $ Call-Aux-On-Baby$(x, Q, R)$</alg-return>
-                <alg-while condition="x < y" label="my_while">
+                <alg-while condition="x < y">
                     <alg-step>$x + y$</alg-step>
                 </alg-while>
-                <alg-repeat-until condition="i < 10" comment="Repeat until false" comment-id="repeat-until-loop" label="until-repeat">
+                <alg-repeat-until condition="i < 10" comment="Repeat until false" comment-id="repeat-until-loop">
                     <alg-step>$y + x$</alg-step>
                 </alg-repeat-until>
                 <alg-if condition="x + z < y">

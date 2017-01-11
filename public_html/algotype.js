@@ -16,7 +16,7 @@ Algotype.ALGORITHM_STEP_COMMENT_TAG = "//";
 Algotype.LINE_NUMBER_WIDTH = 25;
 
 // The indentation in pixels.
-Algotype.INDENTATION_WIDTH = 25;
+Algotype.INDENTATION_WIDTH = 30;
 
 // Number of pixels between the line number span and the pseudocode span.
 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE = 8;
@@ -120,7 +120,7 @@ Algotype.getLabelHtml = function(state, label) {
            "  <tbody class='algotype-code-row-tbody'\n" +
            "    <tr class='algotype-algorithm-line'>\n" +
            "      <td class='algotype-algorithm-line-number'></td>\n" +
-           "      <td class='algorithm-line-number-space' width='" + 
+           "      <td class='algotype-line-number-space' width='" + 
            (Algotype.INDENTATION_WIDTH * state["indentation"] +
             Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
            "px'></td>\n" + 
@@ -165,7 +165,7 @@ Algotype.typesetIf = function(ifElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -235,7 +235,7 @@ Algotype.typesetElseIf = function(elseIfElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -302,7 +302,7 @@ Algotype.typesetElse = function(elseElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -393,7 +393,7 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
                "      <td class='algotype-algorithm-line-number'>" +
                state["lineNumber"] +
                "</td> " +
-               "<td class='algorithm-line-number-space' width='" +
+               "<td class='algotype-line-number-space' width='" +
                (Algotype.INDENTATION_WIDTH * state["indentation"] +
                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
                "px'></td>" +
@@ -422,7 +422,7 @@ Algotype.typesetBreak = function(breakElement, state) {
             "    <tr class='algotype-algorithm-line'>\n" +
             "      <td class='algotype-algorithm-line-number'>" +
             state["lineNumber"] + "</td>\n" +
-            "      <td class='algorithm-line-number-space' width='" +
+            "      <td class='algotype-line-number-space' width='" +
             (Algotype.INDENTATION_WIDTH * state["indentation"] +
              Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
             "px'></td>\n" +
@@ -446,7 +446,7 @@ Algotype.typesetContinue = function(continueElement, state) {
             "    <tr class='algotype-algorithm-line'>\n" +
             "      <td class='algotype-algorithm-line-number'>" +
             state["lineNumber"] + "</td>\n" +
-            "      <td class='algorithm-line-number-space' width='" +
+            "      <td class='algotype-line-number-space' width='" +
             (Algotype.INDENTATION_WIDTH * state["indentation"] +
              Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
             "px'></td>\n" +
@@ -515,7 +515,7 @@ Algotype.typesetForEach = function(forEachElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -611,7 +611,7 @@ Algotype.typesetFor = function(forElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -692,7 +692,7 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -725,22 +725,6 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
     state["indentation"] = saveIndentation;
     return htmlText;
 };
-
-function getLabelRowHtml(label) {
-    return "<table class='algotype-code-row-table'>\n" +
-           "  <tbody class='algotype-code-row-tbody'\n" +
-           "    <tr class='algotype-algorithm-line'>\n" +
-           "      <td class='algotype-algorithm-line-number'></td>\n" +
-           "      <td class='algorithm-line-number-space' width='" + 
-           (Algotype.INDENTATION_WIDTH * state["indentation"] +
-            Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-           "px'></td>\n" + 
-           "      <td class='algotype-label algotype-text'>" + label +
-           "</td>\n" +
-           "    </tr>\n" +
-           "  </tbody>\n" +
-           "</table>\n";
-}
 
 Algotype.typesetForever = function(foreverElement, state) {
     var label = foreverElement.getAttribute("label");
@@ -775,7 +759,7 @@ Algotype.typesetForever = function(foreverElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -855,7 +839,7 @@ Algotype.typesetWhile = function(whileElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -938,7 +922,7 @@ Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
@@ -976,7 +960,7 @@ Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
                 "      <td class='algotype-algorithm-line-number'>" +
                 state["lineNumber"] +
                 "      </td> " +
-                "      <td class='algorithm-line-number-space' width='" + 
+                "      <td class='algotype-line-number-space' width='" + 
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
