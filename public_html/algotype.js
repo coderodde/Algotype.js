@@ -115,6 +115,22 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     return tex + ")$";
 };
 
+Algotype.getLabelHtml = function(state, label) {
+    return "<table class='algotype-code-row-table'>\n" +
+           "  <tbody class='algotype-code-row-tbody'\n" +
+           "    <tr class='algotype-algorithm-line'>\n" +
+           "      <td class='algotype-algorithm-line-number'></td>\n" +
+           "      <td class='algorithm-line-number-space' width='" + 
+           (Algotype.INDENTATION_WIDTH * state["indentation"] +
+            Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
+           "px'></td>\n" + 
+           "      <td class='algotype-label algotype-text'>" + label + 
+           "</td>\n" +
+           "    </tr>\n" +
+           "  </tbody>\n" +
+           "</table>\n";
+};
+
 Algotype.typesetIf = function(ifElement, state) {
     var conditionTeX = (ifElement.getAttribute("condition") || "").trim();
     conditionTeX = addTeXDelimeters(conditionTeX);
@@ -301,6 +317,8 @@ Algotype.typesetElse = function(elseElement, state) {
     var saveIndentation = state["indentation"];
     
     state["lineNumber"]++;
+    
+    
     state["indentation"]++;
     
     var childElements = elseElement.children;
@@ -479,19 +497,7 @@ Algotype.typesetForEach = function(forEachElement, state) {
             label += ":";
         }
         
-        htmlText += "<table class='algotype-code-row-table'>\n" +
-                    "  <tbody class='algotype-code-row-tbody'\n" +
-                    "    <tr class='algotype-algorithm-line'>\n" +
-                    "      <td class='algotype-algorithm-line-number'></td>\n" +
-                    "      <td class='algorithm-line-number-space' width='" + 
-                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
-                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-                    "px'></td>\n" + 
-                    "      <td class='algotype-label algotype-text'>" + label + 
-                    "</td>\n" +
-                    "    </tr>\n" +
-                    "  </tbody>\n" +
-                    "</table>\n";
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     var forEachId = forEachElement.getAttribute("id");
@@ -596,19 +602,7 @@ Algotype.typesetFor = function(forElement, state) {
             label += ":";
         }
         
-        htmlText += "<table class='algotype-code-row-table'>\n" +
-                    "  <tbody class='algotype-code-row-tbody'\n" +
-                    "    <tr class='algotype-algorithm-line'>\n" +
-                    "      <td class='algotype-algorithm-line-number'></td>\n" +
-                    "      <td class='algorithm-line-number-space' width='" + 
-                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
-                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-                    "px'></td>\n" + 
-                    "      <td class='algotype-label algotype-text'>" + label +
-                    "</td>\n" +
-                    "    </tr>\n" +
-                    "  </tbody>\n" +
-                    "</table>\n";
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     htmlText += "<table class='algotype-code-row-table'>\n" +
@@ -689,19 +683,7 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
             label += ":";
         }
         
-        htmlText += "<table class='algotype-code-row-table'>\n" +
-                    "  <tbody class='algotype-code-row-tbody'\n" +
-                    "    <tr class='algotype-algorithm-line'>\n" +
-                    "      <td class='algotype-algorithm-line-number'></td>\n" +
-                    "      <td class='algorithm-line-number-space' width='" + 
-                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
-                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-                    "px'></td>\n" + 
-                    "      <td class='algotype-label algotype-text'>" + label +
-                    "</td>\n" +
-                    "    </tr>\n" +
-                    "  </tbody>\n" +
-                    "</table>\n"; 
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     htmlText += "<table class='algotype-code-row-table'>\n" +
@@ -784,7 +766,7 @@ Algotype.typesetForever = function(foreverElement, state) {
             label += ":";
         }
         
-        htmlText += getLabelRowHtml(label);
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     htmlText += "<table class='algotype-code-row-table'>\n" +
@@ -855,19 +837,7 @@ Algotype.typesetWhile = function(whileElement, state) {
             label += ":";
         }
         
-        htmlText += "<table class='algotype-code-row-table'>\n" +
-                    "  <tbody class='algotype-code-row-tbody'\n" +
-                    "    <tr class='algotype-algorithm-line'>\n" +
-                    "      <td class='algotype-algorithm-line-number'></td>\n" +
-                    "      <td class='algorithm-line-number-space' width='" + 
-                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
-                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-                    "px'></td>\n" + 
-                    "      <td class='algotype-label algotype-text'>" + label + 
-                    "</td>\n" +
-                    "    </tr>\n" +
-                    "  </tbody>\n" +
-                    "</table>\n";
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     var whileId = whileElement.getAttribute("id");
@@ -950,19 +920,7 @@ Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
             label += ":";
         }
         
-        htmlText += "<table class='algotype-code-row-table'>\n" +
-                    "  <tbody class='algotype-code-row-tbody'\n" +
-                    "    <tr class='algotype-algorithm-line'>\n" +
-                    "      <td class='algotype-algorithm-line-number'></td>\n" +
-                    "      <td class='algorithm-line-number-space' width='" + 
-                    (Algotype.INDENTATION_WIDTH * state["indentation"] +
-                     Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
-                    "px'></td>\n" + 
-                    "      <td class='algotype-label algotype-text'>" + label + 
-                    "</td>\n" +
-                    "    </tr>\n" +
-                    "  </tbody>\n" +
-                    "</table>\n";
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     var repeatUntilId = repeatUntilElement.getAttribute("id");
