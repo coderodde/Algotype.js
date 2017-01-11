@@ -11,7 +11,6 @@ alg-algorithm {
 .algotype-text {
     font-family: Times New Roman;
     font-size: 18px;
-    color: #a22;
 }
 
 .algotype-keyword {
@@ -45,7 +44,6 @@ td.algotype-algorithm-line-number {
     width: 20px;
     text-align: right;
     margin-bottom: -3px;
-    color: green;
 }
 
 td.algorithm-line-number-space {
@@ -77,5 +75,5 @@ td.algorithm-line-number-space {
 }
 
 #my_outer_foreach {
-    color: black;
+    color: red;
 }
