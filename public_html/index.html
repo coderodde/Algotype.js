@@ -32,8 +32,11 @@
                 </alg-forever>
                 <alg-return>$10 + xy + \log z \; - $ Call-Aux-On-Baby$(x, Q, R)$</alg-return>
                 <alg-while condition="x < y">
-                    
+                    <alg-step>$x + y$</alg-step>
                 </alg-while>
+                <alg-repeat-until condition="i < 10" comment="Repeat until false" comment-id="repeat-until-loop">
+                    <alg-step>$y + x$</alg-step>
+                </alg-repeat-until>
             </alg-algorithm>
         </div>
         <p>This is the last paragraph.This is the last paragraph.This is the last paragraph.This is the last paragraph.</p>
