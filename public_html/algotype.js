@@ -439,7 +439,29 @@ Algotype.typesetReturn = function(returnElement, state) {
 };
 
 Algotype.typesetBreak = function(breakElement, state) {
+    var comment = breakElement.getAttribute("comment") || "";
+    var commentId = breakElement.getAttribute("comment-id");
+    var idText = "";
+    
+    if (commentId) {
+        idText = " id='" + commentId + "'";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment'" + idText + ">" +
+                  Algotype.ALGORITHM_STEP_COMMENT_TAG + " " +
+                  comment.trim() + "</span>";
+    }
+    
     var label = breakElement.innerHTML;
+    var breakId = breakElement.getAttribute("id");
+    var breakIdTextBegin = "";
+    var breakIdTextEnd = "";
+    
+    if (breakId) {
+        breakIdTextBegin = "<span id='" + breakId + "'>";
+        breakIdTextEnd = "</span>";
+    }
     
     var htmlText = 
             "<table class='algotype-code-row-table'>\n" +
@@ -451,8 +473,10 @@ Algotype.typesetBreak = function(breakElement, state) {
             (Algotype.INDENTATION_WIDTH * state["indentation"] +
              Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
             "px'></td>\n" +
-            "      <td class='algotype-text algotype-keyword'>break " +
+            "      <td class='algotype-text algotype-keyword'>" +
+            breakIdTextBegin + "break " +
             (label ? "<span class='algotype-label'>" + label + "</span>" : "") +
+            breakIdTextEnd +
             "</td>\n" +
             "    </tr>\n" +
             "  </tbody>\n" +
@@ -577,6 +601,10 @@ Algotype.typesetForEach = function(forEachElement, state) {
 };
 
 function addTeXDelimeters(code) {
+    if (!code) {
+        return "";
+    }
+    
     code = code.trim();
     
     if (code[0] !== "$") {
@@ -807,6 +835,15 @@ Algotype.typesetForever = function(foreverElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
+    var foreverId = foreverElement.getAttribute("id");
+    var foreverIdTextBegin = "";
+    var foreverIdTextEnd = "";
+    
+    if (foreverId) {
+        foreverIdTextBegin = "<span id='" + foreverId + "'>";
+        foreverIdTextEnd = "</span>";
+    }
+    
     htmlText += "<table class='algotype-code-row-table'>\n" +
                 "  <tbody class='algotype-code-row-tbody'>\n" +
                 "    <tr class='algotype-algorithm-line'>\n" +
@@ -817,7 +854,8 @@ Algotype.typesetForever = function(foreverElement, state) {
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
-                "      <td class='algotype-text algotype-keyword'>forever:" + 
+                "      <td class='algotype-text algotype-keyword'>" +
+                foreverIdTextBegin + "forever:" + foreverIdTextEnd +
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
