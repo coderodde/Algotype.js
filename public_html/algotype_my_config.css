@@ -5,3 +5,35 @@
 #my_outer_foreach {
     color: red;
 }
+
+#step_id1 {
+    color: black;
+}
+
+#comment_id1 {
+    color: black;
+}
+
+#step_id2 {
+    color: brown;
+}
+
+#comment_id2 {
+    color: black;
+}
+
+#step_id3 {
+    color: black;
+}
+
+#comment_id3 {
+    color: blue;
+}
+
+#step_id4 {
+    color: brown;
+}
+
+#comment_id4 {
+    color: blue;
+}

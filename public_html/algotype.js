@@ -381,11 +381,34 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
         }
     }
     
+    var comment = stepElement.getAttribute("comment") || "";
+    var commentId = stepElement.getAttribute("comment-id");
+    var idText = "";
+    
+    if (commentId) {
+        idText = " id='" + commentId + "'";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment'" + idText + ">" +
+                  Algotype.ALGORITHM_STEP_COMMENT_TAG + " " +
+                  comment.trim() + "</span>";
+    }
+    
     var returnHtml = "";
     
     if (isReturn === true) {
         returnHtml = "<span class='algotype-text algotype-keyword'>" +
                      "return</span> ";
+    }
+    
+    var stepId = stepElement.getAttribute("id");
+    var stepIdTextBegin = "";
+    var stepIdTextEnd = "";
+    
+    if (stepId) {
+        stepIdTextBegin = "<span id='" + stepId + "'>";
+        stepIdTextEnd = "</span>";
     }
     
     htmlText = "<table class='algotype-code-row-table'>\n" + 
@@ -399,8 +422,9 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
                "px'></td>" +
                "<td class='algotype-text'>" + 
-               (isReturn ? returnHtml : "") +
-               htmlText +
+               stepIdTextBegin + 
+               returnHtml + 
+               htmlText + stepIdTextEnd + comment +
                "</td>\n" +
                "    </tr>\n" +
                "  </tbody>\n" +
@@ -573,7 +597,10 @@ Algotype.typesetFor = function(forElement, state) {
     
     initConditionTeX = addTeXDelimeters(initConditionTeX);
     toConditionTeX = addTeXDelimeters(toConditionTeX);
-    stepConditionTeX = addTeXDelimeters(stepConditionTeX);
+    
+    if (stepConditionTeX) {
+        stepConditionTeX = addTeXDelimeters(stepConditionTeX);
+    }
     
     var label = forElement.getAttribute("label");
     var htmlText = "";
