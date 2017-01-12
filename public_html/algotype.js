@@ -138,7 +138,7 @@ Algotype.typesetIf = function(ifElement, state) {
     
     var htmlText = "";
     var comment = ifElement.getAttribute("comment");
-    var commentId = ifElement.getAttribute("comment-id");
+    var commentId = (ifElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -151,7 +151,7 @@ Algotype.typesetIf = function(ifElement, state) {
                   comment.trim() + "</span>";
     }
     
-    var ifId = ifElement.getAttribute("id");
+    var ifId = (ifElement.getAttribute("id") || "").trim();
     var ifIdTextBegin = "";
     var ifIdTextEnd = "";
     
@@ -208,7 +208,7 @@ Algotype.typesetElseIf = function(elseIfElement, state) {
     
     var htmlText = "";
     var comment = elseIfElement.getAttribute("comment");
-    var commentId = elseIfElement.getAttribute("comment-id");
+    var commentId = (elseIfElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -221,7 +221,7 @@ Algotype.typesetElseIf = function(elseIfElement, state) {
                   comment.trim() + "</span>";
     }
     
-    var elseIfId = elseIfElement.getAttribute("id");
+    var elseIfId = (elseIfElement.getAttribute("id") || "").trim();
     var elseIfIdTextBegin = "";
     var elseIfIdTextEnd = "";
     
@@ -275,7 +275,7 @@ Algotype.typesetElseIf = function(elseIfElement, state) {
 Algotype.typesetElse = function(elseElement, state) {
     var htmlText = "";
     var comment = elseElement.getAttribute("comment");
-    var commentId = elseElement.getAttribute("comment-id");
+    var commentId = (elseElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -288,7 +288,7 @@ Algotype.typesetElse = function(elseElement, state) {
                   comment.trim() + "</span>";
     }
     
-    var elseId = elseElement.getAttribute("id");
+    var elseId = (elseElement.getAttribute("id") || "").trim();
     var elseIdTextBegin = "";
     var elseIdTextEnd = "";
     
@@ -381,8 +381,16 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
         }
     }
     
+    if (call) {
+        // Handling the trailing call sequence.
+        htmlText += " <span " + 
+                    "class='algotype-text algotype-algorithm-name'>" + 
+                    call + 
+                    "</span>";
+    }
+    
     var comment = stepElement.getAttribute("comment") || "";
-    var commentId = stepElement.getAttribute("comment-id");
+    var commentId = (stepElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -402,7 +410,7 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
                      "return</span> ";
     }
     
-    var stepId = stepElement.getAttribute("id");
+    var stepId = (stepElement.getAttribute("id") || "").trim();
     var stepIdTextBegin = "";
     var stepIdTextEnd = "";
     
@@ -440,7 +448,7 @@ Algotype.typesetReturn = function(returnElement, state) {
 
 Algotype.typesetBreak = function(breakElement, state) {
     var comment = breakElement.getAttribute("comment") || "";
-    var commentId = breakElement.getAttribute("comment-id");
+    var commentId = (breakElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -454,7 +462,7 @@ Algotype.typesetBreak = function(breakElement, state) {
     }
     
     var label = breakElement.innerHTML;
-    var breakId = breakElement.getAttribute("id");
+    var breakId = (breakElement.getAttribute("id") || "").trim();
     var breakIdTextBegin = "";
     var breakIdTextEnd = "";
     
@@ -489,7 +497,7 @@ Algotype.typesetBreak = function(breakElement, state) {
 
 Algotype.typesetContinue = function(continueElement, state) {
     var comment = continueElement.getAttribute("comment") || "";
-    var commentId = continueElement.getAttribute("comment-id") || "";
+    var commentId = (continueElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -503,7 +511,7 @@ Algotype.typesetContinue = function(continueElement, state) {
     }
     
     var label = continueElement.innerHTML;
-    var continueId = continueElement.getAttribute("id");
+    var continueId = (continueElement.getAttribute("id") || "").trim();
     var continueIdTextBegin = "";
     var continueIdTextEnd = "";
     
@@ -550,7 +558,7 @@ Algotype.typesetForEach = function(forEachElement, state) {
     var label = forEachElement.getAttribute("label");
     var htmlText = "";
     var comment = forEachElement.getAttribute("comment");
-    var commentId = forEachElement.getAttribute("comment-id");
+    var commentId = (forEachElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -573,7 +581,7 @@ Algotype.typesetForEach = function(forEachElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
-    var forEachId = forEachElement.getAttribute("id");
+    var forEachId = (forEachElement.getAttribute("id") || "").trim();
     var forEachIdTextBegin = "";
     var forEachIdTextEnd = "";
     
@@ -657,7 +665,7 @@ Algotype.typesetFor = function(forElement, state) {
     var label = forElement.getAttribute("label");
     var htmlText = "";
     var comment = forElement.getAttribute("comment");
-    var commentId = forElement.getAttribute("comment-id");
+    var commentId = (forElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     var stepText = "";
     
@@ -685,7 +693,7 @@ Algotype.typesetFor = function(forElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
-    var forId = forElement.getAttribute("id");
+    var forId = (forElement.getAttribute("id") || "").trim();
     var forIdTextBegin = "";
     var forIdTextEnd = "";
     
@@ -752,7 +760,7 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
     var label = forDowntoElement.getAttribute("label");
     var htmlText = "";
     var comment = forDowntoElement.getAttribute("comment");
-    var commentId = forDowntoElement.getAttribute("comment-id");
+    var commentId = (forDowntoElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     var stepText = "";
     
@@ -780,7 +788,7 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
-    var forDowntoId = forDowntoElement.getAttribute("id");
+    var forDowntoId = (forDowntoElement.getAttribute("id") || "").trim();
     var forDowntoTextBegin = "";
     var forDowntoTextEnd = "";
     
@@ -836,7 +844,7 @@ Algotype.typesetForever = function(foreverElement, state) {
     var label = foreverElement.getAttribute("label");
     var htmlText = "";
     var comment = foreverElement.getAttribute("comment");
-    var commentId = foreverElement.getAttribute("comment-id");
+    var commentId = (foreverElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -859,7 +867,7 @@ Algotype.typesetForever = function(foreverElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
-    var foreverId = foreverElement.getAttribute("id");
+    var foreverId = (foreverElement.getAttribute("id") || "").trim();
     var foreverIdTextBegin = "";
     var foreverIdTextEnd = "";
     
@@ -917,7 +925,7 @@ Algotype.typesetWhile = function(whileElement, state) {
     var label = whileElement.getAttribute("label");
     var htmlText = "";
     var comment = whileElement.getAttribute("comment");
-    var commentId = whileElement.getAttribute("comment-id");
+    var commentId = (whileElement.getAttribute("comment-id") || "").trim();
     var idText = "";
     
     if (commentId) {
@@ -940,7 +948,7 @@ Algotype.typesetWhile = function(whileElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
-    var whileId = whileElement.getAttribute("id");
+    var whileId = (whileElement.getAttribute("id") || "").trim();
     var whileIdTextBegin = "";
     var whileIdTextEnd = "";
     
@@ -1000,7 +1008,9 @@ Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
     var label = repeatUntilElement.getAttribute("label");
     var htmlText = "";
     var comment = repeatUntilElement.getAttribute("comment");
-    var commentId = repeatUntilElement.getAttribute("comment-id");
+    var commentId = 
+            (repeatUntilElement.getAttribute("comment-id") || "").trim();
+    
     var idText = "";
     
     if (commentId) {
@@ -1023,7 +1033,7 @@ Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
-    var repeatUntilId = repeatUntilElement.getAttribute("id");
+    var repeatUntilId = (repeatUntilElement.getAttribute("id") || "").trim();
     var repeatUntilIdTextBegin = "";
     var repeatUntilIdTextEnd = "";
     
