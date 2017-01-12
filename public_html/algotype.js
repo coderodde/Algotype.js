@@ -8,7 +8,7 @@ var Algotype = {};
 Algotype.ALGORITHM_HEADER_COMMENT_TAG = "#";
 
 // The string beginning the step comments. 
-Algotype.ALGORITHM_STEP_COMMENT_TAG = "//";
+Algotype.ALGORITHM_STEP_COMMENT_TAG = "#";
 
 // The width of code line numbers. This default works well. If you, however, 
 // need to typeset an algorithm with at least 100 rows (in which case the space
@@ -633,6 +633,15 @@ Algotype.typesetFor = function(forElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
+    var forId = forElement.getAttribute("id");
+    var forIdTextBegin = "";
+    var forIdTextEnd = "";
+    
+    if (forId) {
+        forIdTextBegin = "<span id='" + forId + "'>";
+        forIdTextEnd = "</span>";
+    }
+    
     htmlText += "<table class='algotype-code-row-table'>\n" +
                 "  <tbody class='algotype-code-row-tbody'>\n" +
                 "    <tr class='algotype-algorithm-line'>\n" +
@@ -643,8 +652,10 @@ Algotype.typesetFor = function(forElement, state) {
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
-                "      <td class='algotype-text algotype-keyword'>for " + 
+                "      <td class='algotype-text algotype-keyword'>" +
+                forIdTextBegin + "for " + 
                 initConditionTeX + " to " + toConditionTeX + stepText + ":" + 
+                forIdTextEnd +
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
@@ -681,7 +692,10 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
     
     initConditionTeX = addTeXDelimeters(initConditionTeX);
     toConditionTeX   = addTeXDelimeters(toConditionTeX);
-    stepConditionTeX = addTeXDelimeters(stepConditionTeX);
+    
+    if (stepConditionTeX) {
+        stepConditionTeX = addTeXDelimeters(stepConditionTeX);
+    }
     
     var label = forDowntoElement.getAttribute("label");
     var htmlText = "";
@@ -714,6 +728,15 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
         htmlText += Algotype.getLabelHtml(state, label);
     }
     
+    var forDowntoId = forDowntoElement.getAttribute("id");
+    var forDowntoTextBegin = "";
+    var forDowntoTextEnd = "";
+    
+    if (forDowntoId) {
+        forDowntoTextBegin = "<span id='" + forDowntoId + "'>";
+        forDowntoTextEnd = "</span>";
+    }
+    
     htmlText += "<table class='algotype-code-row-table'>\n" +
                 "  <tbody class='algotype-code-row-tbody'>\n" +
                 "    <tr class='algotype-algorithm-line'>\n" +
@@ -724,9 +747,12 @@ Algotype.typesetForDownto = function(forDowntoElement, state) {
                 (Algotype.INDENTATION_WIDTH * state["indentation"] + 
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
-                "      <td class='algotype-text algotype-keyword'>for " + 
+                "      <td class='algotype-text algotype-keyword'>" + 
+                forDowntoTextBegin + "for " +
                 initConditionTeX + " downto " + toConditionTeX + stepText + 
-                ":" + (comment ? comment : "") +
+                ":" + 
+                forDowntoTextEnd +
+                (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
                 "  </tbody>\n" +
