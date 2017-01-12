@@ -38,7 +38,8 @@ Algotype.MATHJAX_CONFIG =
                 'Not:     "\\\\mathbf{not}",'    +
                 'Is:      "\\\\mathbf{is}",'     +
                 'In:      "\\\\mathbf{in}",'     +
-                'Mapped:  "\\\\mathbf{mapped}"'  +
+                'Mapped:  "\\\\mathbf{mapped}",' +
+                'Nil:     "\\\\mathbf{nil}"'     +
             '}' +
         '}' +
     '});';
