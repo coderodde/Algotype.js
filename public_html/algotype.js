@@ -476,7 +476,7 @@ Algotype.typesetBreak = function(breakElement, state) {
             "      <td class='algotype-text algotype-keyword'>" +
             breakIdTextBegin + "break " +
             (label ? "<span class='algotype-label'>" + label + "</span>" : "") +
-            breakIdTextEnd +
+            breakIdTextEnd + comment +
             "</td>\n" +
             "    </tr>\n" +
             "  </tbody>\n" +
@@ -488,7 +488,29 @@ Algotype.typesetBreak = function(breakElement, state) {
 };
 
 Algotype.typesetContinue = function(continueElement, state) {
+    var comment = continueElement.getAttribute("comment") || "";
+    var commentId = continueElement.getAttribute("comment-id") || "";
+    var idText = "";
+    
+    if (commentId) {
+        idText = " id='" + commentId + "'";
+    }
+    
+    if (comment) {
+        comment = " <span class='algotype-step-comment'" + idText + ">" + 
+                  Algotype.ALGORITHM_STEP_COMMENT_TAG + " " + 
+                  comment.trim() + "</span>";
+    }
+    
     var label = continueElement.innerHTML;
+    var continueId = continueElement.getAttribute("id");
+    var continueIdTextBegin = "";
+    var continueIdTextEnd = "";
+    
+    if (continueId) {
+        continueIdTextBegin = "<span id='" + continueId + "'>";
+        continueIdTextEnd = "</span>";
+    }
     
     var htmlText = "<table class='algotype-code-row-table'>\n" +
             "  <tbody class='algotype-code-row-tbody'>\n" +
@@ -499,8 +521,10 @@ Algotype.typesetContinue = function(continueElement, state) {
             (Algotype.INDENTATION_WIDTH * state["indentation"] +
              Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
             "px'></td>\n" +
-            "      <td class='algotype-text algotype-keyword'>continue " +
+            "      <td class='algotype-text algotype-keyword'>" +
+            continueIdTextBegin + "continue " +
             (label ? "<span class='algotype-label'>" + label + "</span>" : "") +
+            continueIdTextEnd + comment +
             "</td>\n" +
             "    </tr>\n" +
             "  </tbody>\n" +
