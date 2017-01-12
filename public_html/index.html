@@ -10,7 +10,7 @@
     <body>
         <script src="algotype.js"></script>
         <p>This is the first paragraph. This is the first paragraph. This is the first paragraph.</p>
-        <!--<div align="center" style="width: 50%; margin-left: auto; margin-right: auto;">
+        <div align="center" style="width: 50%; margin-left: auto; margin-right: auto;">
             <alg-algorithm name="Funky-Sort" parameters="x Q A R" comment="A very funky sorting algorithm right here">
                 <alg-foreach id="my_outer_foreach" condition="y \in Q" label="outer_loop" comment="Outer loop" comment-id="outer_loop_comment_id">
                     <alg-foreach condition="z \in Q">
@@ -49,11 +49,10 @@
                 </alg-else>
             </alg-algorithm>
         </div>
-        -->
         <p>This is the last paragraph.This is the last paragraph.This is the last paragraph.This is the last paragraph.</p>
         
         <p>
-            <alg-algorithm name="Super-Sum-Algorithm" parameter="x A R" comment="A nice, efficient algorithm right here">
+            <alg-algorithm name="Super-Sum-Algorithm" parameters="x A R" comment="A nice, efficient algorithm right here">
                 <alg-if condition="x > |A|">
                     <alg-foreach condition="z \in R" comment="For each do something.">
                         <alg-step>$y = $ Aux-Function$(z, x)$</alg-step>
@@ -61,10 +60,10 @@
                 </alg-if>
                 <alg-else-if condition="x < |A|">
                     <alg-for init="i = 1" to="|R|" label="for_loop">
-                        <alg-if condition="x \mod 3 == 1">
+                        <alg-if condition="x \bmod 3 = 1">
                             <alg-break>for_loop</alg-break>
                         </alg-if>
-                        <alg-else-if condition="x \mod 3 == 2">
+                        <alg-else-if condition="x \bmod 3 = 2">
                             <alg-continue>for_loop</alg-continue>
                         </alg-else-if>
                         <alg-return>A \setminus R</alg-return>

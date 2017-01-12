@@ -492,7 +492,7 @@ Algotype.typesetForEach = function(forEachElement, state) {
     conditionTeX = conditionTeX.trim();
     
     if (conditionTeX[0] !== "$") {
-        conditionTeX = "$\\;" + conditionTeX;
+        conditionTeX = "$" + conditionTeX;
     }
     
     if (conditionTeX[conditionTeX.length - 1] !== "$") {
@@ -580,7 +580,7 @@ function addTeXDelimeters(code) {
     code = code.trim();
     
     if (code[0] !== "$") {
-        code = "$\\; " + code;
+        code = "$" + code;
     }
     
     if (code[code.length - 1] !== "$") {
