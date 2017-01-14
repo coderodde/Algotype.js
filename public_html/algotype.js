@@ -93,8 +93,10 @@ Algotype.getAlgorithmParameterList = function(algorithmElement) {
     }
     
     // Remove the ending parenthesis, if present.
-    if (algorithmParameterList[algorithmParameterList - 1] === ")") {
-        algorithmParameterList.substring(0, algorithmParameterList.length - 1);
+    if (algorithmParameterList[algorithmParameterList.length - 1] === ")") {
+        algorithmParameterList =
+                algorithmParameterList
+                .substring(0, algorithmParameterList.length - 1);
     }
     
     // Remove possible leading and trailing space within the parentheses.
@@ -1148,20 +1150,6 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
 Algotype.setup = function() {
     // Load MathJax.
     Algotype.loadMathJax();
-    
-    // Create the Algotype.js specific tags.
-    document.registerElement("alg-algorithm");
-    document.registerElement("alg-foreach");
-    document.registerElement("alg-for");
-    document.registerElement("alg-for-downto");
-    document.registerElement("alg-forever");
-    document.registerElement("alg-if");
-    document.registerElement("alg-elseif");
-    document.registerElement("alg-else");
-    document.registerElement("alg-step");
-    document.registerElement("alg-return");
-    document.registerElement("alg-break");
-    document.registerElement("alg-continue");
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");
