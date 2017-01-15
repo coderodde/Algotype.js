@@ -1147,9 +1147,74 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     parentNode.appendChild(paragraphElement);
 };
 
+Algotype.setCSSRules = function() {
+    var styleElement = document.createElement("style");
+    styleElement.innerHTML = 
+"alg-algorithm {   \
+    display: none; \
+} \
+.algotype-text {                 \
+    padding-bottom: 2px;          \
+    font-family: Times New Roman; \
+    font-size: 18px;              \
+                       \
+} \
+.algotype-keyword {    \
+    font-weight: bold; \
+} \
+table.algotype-code-row-table { \
+    padding: 0;                 \
+    margin: 0;                  \
+    border-collapse: collapse;  \
+    margin-bottom: -3px;        \
+} \
+tbody.algotype-code-row-tbody { \
+    padding: 0;                 \
+    margin: 0;                  \
+    margin-bottom: -3px;        \
+} \
+tr.algotype-algorithm-line { \
+    padding: 0;              \
+    margin: 0;               \
+    margin-bottom: -3px;     \
+} \
+td.algotype-algorithm-line-number { \
+    padding: 0;                     \
+    margin: 0;                      \
+    font-family: Times New Roman;   \
+    font-size: 16px;                \
+    font-weight: bold;              \
+    width: 20px;                    \
+    text-align: right;              \
+    margin-bottom: 0px;             \
+} \
+td.algotype-line-number-space { \
+    padding: 0;                 \
+    margin: 0;                  \
+    margin-bottom: -3px;        \
+} \
+.algotype-algorithm-name {    \
+    font-variant: small-caps; \
+    font-weight: bolder;      \
+} \
+.algotype-label {           \
+    font-size: 14px;        \
+    font-family: monospace; \
+    font-weight: normal;    \
+} \
+.algotype-step-comment {          \
+    font-family: Times New Roman; \
+    font-size: 18px;              \
+    font-weight: normal;          \
+    font-variant: normal;         \
+}";
+    document.head.appendChild(styleElement);
+};
+    
 Algotype.setup = function() {
     // Load MathJax.
     Algotype.loadMathJax();
+    Algotype.setCSSRules();
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");
