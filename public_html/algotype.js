@@ -1112,12 +1112,19 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     var parentNode = algorithmElement.parentNode;
 
     var htmlText = 
+            "<table class='algotype-algorithm-header'>\n" +
+            "    <tbody class='algotype-algorithm-header'>\n" +
+            "        <tr>\n" + 
+            "            <td>" +
             "<span class='algotype-text algotype-algorithm-name'>" +
             algorithmName +
             "</span><span class='algotype-text'>" + algorithmParameterList + 
             commentText +
-            "</span><br/>";
-    
+            "</span></td>\n" + 
+            "        </tr>\n" + 
+            "    </tbody>\n" +
+            "</table>\n";
+            
     var childElements = algorithmElement.children;
     
     var state = {
@@ -1206,6 +1213,14 @@ td.algotype-line-number-space { \n\
         font-size: 14px; \n\
         font-family: monospace; \n\
         font-weight: normal;\n\
+}\n\
+\n\
+.algotype-algorithm-header { \n\
+    border-bottom: 1px solid black; \n\
+    border-top: 1px solid black;    \n\
+    border-colapse: collapse;       \n\
+    margin: 0;                      \n\
+    padding: 0;                     \n\
 }\n\
 \n\
 .algotype-step-comment {          \n\
