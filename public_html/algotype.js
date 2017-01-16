@@ -174,7 +174,7 @@ Algotype.typesetIf = function(ifElement, state) {
                 "px'></td>\n" +
                 "      <td class='algotype-text algotype-keyword'>" +
                 ifIdTextBegin + "if " + 
-                conditionTeX + ":" + ifIdTextEnd + 
+                conditionTeX + " then" + ifIdTextEnd + 
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
@@ -244,7 +244,7 @@ Algotype.typesetElseIf = function(elseIfElement, state) {
                 "px'></td>\n" +
                 "      <td class='algotype-text algotype-keyword'>" +
                 elseIfIdTextBegin + "else if " + 
-                conditionTeX + ":" + elseIfIdTextEnd + 
+                conditionTeX + " then" + elseIfIdTextEnd + 
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
