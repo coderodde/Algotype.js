@@ -393,7 +393,23 @@ Algotype.typesetCondition = function(conditionText) {
     return htmlText;
 };
 
-Algotype.typesetStep = function(stepElement, state, isReturn) {
+Algotype.typesetPrint = function(printElement, state) {
+    return Algotype.typesetStep(printElement, state, "print");
+};
+
+Algotype.typesetOutput = function(outputElement, state) {
+    return Algotype.typesetStep(outputElement, state, "output");
+};
+
+Algotype.typesetYield = function(yieldElement, state) {
+    return Algotype.typesetStep(yieldElement, state, "yield");
+};
+
+Algotype.typesetStep = function(stepElement, state, keyword) {
+    if (!keyword) {
+        keyword = "";
+    }
+    
     var stepText = (stepElement.innerHTML || "").trim();
     var inTeX = false;
     var htmlText = ""; //Algotype.typesetCondition(stepText);
@@ -456,13 +472,10 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
                   comment.trim() + "</span>";
     }
     
-    var returnHtml = "";
-    
-    if (isReturn === true) {
-        returnHtml = "<span class='algotype-text algotype-keyword'>" +
-                     "return</span> ";
-    }
-    
+    var keywordHtml = "<span class='algotype-text algotype-keyword'>" +
+                      keyword +
+                      "</span>";
+              
     var stepId = (stepElement.getAttribute("id") || "").trim();
     var stepIdTextBegin = "";
     var stepIdTextEnd = "";
@@ -483,9 +496,8 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
                 Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) +
                "px'></td>" +
                "<td class='algotype-text'>" + 
-               stepIdTextBegin + 
-               returnHtml + 
-               htmlText + stepIdTextEnd + comment +
+               stepIdTextBegin + keywordHtml + " " + htmlText + stepIdTextEnd + 
+               comment +
                "</td>\n" +
                "    </tr>\n" +
                "  </tbody>\n" +
@@ -496,7 +508,7 @@ Algotype.typesetStep = function(stepElement, state, isReturn) {
 };
 
 Algotype.typesetReturn = function(returnElement, state) {
-    return Algotype.typesetStep(returnElement, state, true);
+    return Algotype.typesetStep(returnElement, state, "returnnnn");
 };
 
 Algotype.typesetBreak = function(breakElement, state) {
@@ -1300,6 +1312,9 @@ Algotype.dispatchTable["alg-step"]         = Algotype.typesetStep;
 Algotype.dispatchTable["alg-return"]       = Algotype.typesetReturn;
 Algotype.dispatchTable["alg-break"]        = Algotype.typesetBreak;
 Algotype.dispatchTable["alg-continue"]     = Algotype.typesetContinue;
+Algotype.dispatchTable["alg-print"]        = Algotype.typesetPrint;
+Algotype.dispatchTable["alg-output"]       = Algotype.typesetOutput;
+Algotype.dispatchTable["alg-yield"]        = Algotype.typesetYield;
 
 var oldOnloadHandler = window.onload;
 
