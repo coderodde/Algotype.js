@@ -1,5 +1,5 @@
 //// ////////////////////////////////////////////////////// ////
- // Algotype.js, version 1.6 by Rodion "(code)rodde" Efremov // 
+ // Algotype.js, version 1.61 by Rodion "(code)rodde" Efremov // 
 ////////////////////////////////////////////////////////////////
 
 var Algotype = {};
@@ -135,9 +135,8 @@ Algotype.getLabelHtml = function(state, label) {
 };
 
 Algotype.typesetIf = function(ifElement, state) {
-    var conditionTeX = (ifElement.getAttribute("condition") || "").trim();
-    conditionTeX = addTeXDelimeters(conditionTeX);
-    
+    var conditionTeX = 
+            Algotype.typesetCondition(ifElement.getAttribute("condition"));
     var htmlText = "";
     var comment = ifElement.getAttribute("comment");
     var commentId = (ifElement.getAttribute("comment-id") || "").trim();
@@ -205,9 +204,8 @@ Algotype.typesetIf = function(ifElement, state) {
 };
 
 Algotype.typesetElseIf = function(elseIfElement, state) {
-    var conditionTeX = (elseIfElement.getAttribute("condition") || "").trim();
-    conditionTeX = addTeXDelimeters(conditionTeX);
-    
+    var conditionTeX =
+            Algotype.typesetCondition(elseIfElement.getAttribute("condition"));
     var htmlText = "";
     var comment = elseIfElement.getAttribute("comment");
     var commentId = (elseIfElement.getAttribute("comment-id") || "").trim();
@@ -320,8 +318,6 @@ Algotype.typesetElse = function(elseElement, state) {
     var saveIndentation = state["indentation"];
     
     state["lineNumber"]++;
-    
-    
     state["indentation"]++;
     
     var childElements = elseElement.children;
@@ -343,7 +339,15 @@ Algotype.typesetElse = function(elseElement, state) {
 };
 
 Algotype.typesetCondition = function(conditionText) {
+    if (!conditionText) {
+        return "";
+    }
+    
     conditionText = conditionText.trim();
+    
+    if (!conditionText) {
+        return "";
+    }
     
     var inTeX = false;
     var htmlText = "";
@@ -351,72 +355,6 @@ Algotype.typesetCondition = function(conditionText) {
     
     for (var i = 0; i < conditionText.length; ++i) {
         var character = conditionText[i];
-        
-        switch (character) {
-            case '$':
-                if (!inTeX) {
-                    if (call) {
-                        // Dump the current call.
-                        htmlText += 
-                            " <span " + 
-                            "class='algotype-text algotype-algorithm-name' style='color: red;'>" + 
-                            call + 
-                            "</span>";
-                    
-                        call = "";
-                    }
-                    
-                    inTeX = true;
-                } else {
-                    inTeX = false;
-                }
-                
-                htmlText += "$";
-                break;
-               
-            default:
-                
-                if (inTeX) {
-                    htmlText += character;
-                } else {
-                    call += character;
-                }
-        }
-    }
-    
-    if (call) {
-        htmlText += " <span class='algotype-text algotype-algorithm-name'>" +
-                    call +
-                    "</span>";
-    }
-    
-    return htmlText;
-};
-
-Algotype.typesetPrint = function(printElement, state) {
-    return Algotype.typesetStep(printElement, state, "print");
-};
-
-Algotype.typesetOutput = function(outputElement, state) {
-    return Algotype.typesetStep(outputElement, state, "output");
-};
-
-Algotype.typesetYield = function(yieldElement, state) {
-    return Algotype.typesetStep(yieldElement, state, "yield");
-};
-
-Algotype.typesetStep = function(stepElement, state, keyword) {
-    if (!keyword) {
-        keyword = "";
-    }
-    
-    var stepText = (stepElement.innerHTML || "").trim();
-    var inTeX = false;
-    var htmlText = ""; //Algotype.typesetCondition(stepText);
-    var call = "";
-    
-    for (var i = 0; i < stepText.length; ++i) {
-        var character = stepText[i];
         
         switch (character) {
             case '$':
@@ -451,13 +389,20 @@ Algotype.typesetStep = function(stepElement, state, keyword) {
     }
     
     if (call) {
-        // Handling the trailing call sequence.
-        htmlText += " <span " + 
-                    "class='algotype-text algotype-algorithm-name'>" + 
-                    call + 
+        htmlText += " <span class='algotype-text algotype-algorithm-name'>" +
+                    call +
                     "</span>";
     }
     
+    return htmlText;
+};
+
+Algotype.typesetStep = function(stepElement, state, keyword) {
+    if (!keyword) {
+        keyword = "";
+    }
+    
+    var htmlText = Algotype.typesetCondition(stepElement.innerHTML || "");
     var comment = stepElement.getAttribute("comment") || "";
     var commentId = (stepElement.getAttribute("comment-id") || "").trim();
     var idText = "";
@@ -508,7 +453,19 @@ Algotype.typesetStep = function(stepElement, state, keyword) {
 };
 
 Algotype.typesetReturn = function(returnElement, state) {
-    return Algotype.typesetStep(returnElement, state, "returnnnn");
+    return Algotype.typesetStep(returnElement, state, "return");
+};
+
+Algotype.typesetPrint = function(printElement, state) {
+    return Algotype.typesetStep(printElement, state, "print");
+};
+
+Algotype.typesetOutput = function(outputElement, state) {
+    return Algotype.typesetStep(outputElement, state, "output");
+};
+
+Algotype.typesetYield = function(yieldElement, state) {
+    return Algotype.typesetStep(yieldElement, state, "yield");
 };
 
 Algotype.typesetBreak = function(breakElement, state) {
@@ -608,8 +565,8 @@ Algotype.typesetContinue = function(continueElement, state) {
 };
 
 Algotype.typesetForEach = function(forEachElement, state) {
-    var conditionTeX = forEachElement.getAttribute("condition") || "";
-    conditionTeX = conditionTeX.trim();
+    var conditionTeX = 
+            Algotype.typesetCondition(forEachElement.getAttribute("condition"));
     
     if (conditionTeX[0] !== "$") {
         conditionTeX = "$" + conditionTeX;
@@ -696,35 +653,15 @@ Algotype.typesetForEach = function(forEachElement, state) {
     return htmlText;
 };
 
-function addTeXDelimeters(code) {
-    if (!code) {
-        return "";
-    }
-    
-    code = code.trim();
-    
-    if (code[0] !== "$") {
-        code = "$" + code;
-    }
-    
-    if (code[code.length - 1] !== "$") {
-        code += "$";
-    }
-    
-    return code;
-}
-
 Algotype.typesetFor = function(forElement, state) {
-    var initConditionTeX = forElement.getAttribute("init") || "";
-    var toConditionTeX = forElement.getAttribute("to") || "";
-    var stepConditionTeX = forElement.getAttribute("step") || "";
+    var initConditionTeX = 
+            Algotype.typesetCondition(forElement.getAttribute("init"));
     
-    initConditionTeX = addTeXDelimeters(initConditionTeX);
-    toConditionTeX = addTeXDelimeters(toConditionTeX);
+    var toConditionTeX = 
+            Algotype.typesetCondition(forElement.getAttribute("to"));
     
-    if (stepConditionTeX) {
-        stepConditionTeX = addTeXDelimeters(stepConditionTeX);
-    }
+    var stepConditionTeX = 
+            Algotype.typesetCondition(forElement.getAttribute("step"));
     
     var label = forElement.getAttribute("label");
     var htmlText = "";
@@ -810,16 +747,14 @@ Algotype.typesetFor = function(forElement, state) {
 };
 
 Algotype.typesetForDownto = function(forDowntoElement, state) {
-    var initConditionTeX = forDowntoElement.getAttribute("init") || "";
-    var toConditionTeX   = forDowntoElement.getAttribute("to")   || "";
-    var stepConditionTeX = forDowntoElement.getAttribute("step") || "";
+    var initConditionTeX = 
+            Algotype.typesetCondition(forDowntoElement.getAttribute("init"));
     
-    initConditionTeX = addTeXDelimeters(initConditionTeX);
-    toConditionTeX   = addTeXDelimeters(toConditionTeX);
+    var toConditionTeX = 
+            Algotype.typesetCondition(forDowntoElement.getAttribute("to"));
     
-    if (stepConditionTeX) {
-        stepConditionTeX = addTeXDelimeters(stepConditionTeX);
-    }
+    var stepConditionTeX = 
+            Algotype.typesetCondition(forDowntoElement.getAttribute("step"));
     
     var label = forDowntoElement.getAttribute("label");
     var htmlText = "";
@@ -982,9 +917,8 @@ Algotype.typesetForever = function(foreverElement, state) {
 };
 
 Algotype.typesetWhile = function(whileElement, state) {
-    var conditionTeX = (whileElement.getAttribute("condition") || "").trim();
-    
-    conditionTeX = addTeXDelimeters(conditionTeX);
+    var conditionTeX = 
+            Algotype.typesetCondition(whileElement.getAttribute("condition"));
     
     var label = whileElement.getAttribute("label");
     var htmlText = "";
@@ -1065,9 +999,8 @@ Algotype.typesetWhile = function(whileElement, state) {
 
 Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
     var conditionTeX = 
-            (repeatUntilElement.getAttribute("condition") || "").trim();
-    
-    conditionTeX = addTeXDelimeters(conditionTeX);
+            Algotype.typesetCondition(
+            repeatUntilElement.getAttribute("condition"));
     
     var label = repeatUntilElement.getAttribute("label");
     var htmlText = "";

@@ -11,16 +11,16 @@
         <p>This is the first paragraph. This is the first paragraph. This is the first paragraph.</p>
         <div align="center" style="width: 50%; margin-left: auto; margin-right: auto;">
             <alg-algorithm name="Funky-Sort" parameters="x Q A R" comment="A very funky sorting algorithm right here">
-                <alg-foreach id="my_outer_foreach" condition="y \in Q" label="outer_loop" comment="Outer loop" comment-id="outer_loop_comment_id">
-                    <alg-foreach condition="z \in Q">
+                <alg-foreach id="my_outer_foreach" condition="$y \in Q$" label="outer_loop" comment="Outer loop" comment-id="outer_loop_comment_id">
+                    <alg-foreach condition="$z \in Q$">
                         <alg-step>$z \leftarrow x + y$</alg-step>
                         <alg-break comment="Comment for outer_loop">outer_loop</alg-break>
                     </alg-foreach>
                     <alg-step>$y' =$ Fuck-Yeah$(x, y) \, + $ Come-On-Baby$(Q)$</alg-step>
-                    <alg-for init="i = 1" to="|A|" step="10 - i">
+                    <alg-for init="$i = $ Get-First$(x)$" to="$|A|$" step="$10 - i$">
                         <alg-step>$a_i = i$</alg-step>
                     </alg-for>
-                    <alg-for-downto init="j =10" to="1" step="2">
+                    <alg-for-downto init="$j = 10$" to="$1$" step="Yeah-Fuck$(j)$">
                         <alg-step>Hello$(j + 1)$ + World$(|Q| + |A|)$</alg-step>
                     </alg-for-downto>
                 </alg-foreach>
@@ -31,23 +31,23 @@
                     <alg-step>$1 + 2$</alg-step>
                 </alg-forever>
                 <alg-return>$10 + xy + \log z \; - $ Call-Aux-On-Baby$(x, Q, R)$</alg-return>
-                <alg-while condition="x < y">
+                <alg-while condition="$x < y \; \Or $ Func$(x + y) = \Nil$">
                     <alg-step>$x + y$</alg-step>
                 </alg-while>
-                <alg-repeat-until condition="i < 10" comment="Repeat until false" comment-id="repeat-until-loop">
+                <alg-repeat-until condition="Repeat$(x)$" comment="Repeat until false" comment-id="repeat-until-loop">
                     <alg-step>$y + x$</alg-step>
                 </alg-repeat-until>
-                <alg-if condition="x + z < y">
+                <alg-if condition="$x + z < y \; \And $ Yeah-Come-On-Baby$()$">
                     <alg-step>A$(1, 5)$</alg-step>
                 </alg-if>
-                <alg-else-if condition="x + z > y + 1">
+                <alg-else-if condition="$x + z > y + 1$">
                     <alg-step>B$()$</alg-step>
                 </alg-else-if>
                 <alg-else>
                     <alg-step>C$(x)$</alg-step>
                 </alg-else>
-                <alg-print>$1$</alg-print>
-                <alg-output>$2$</alg-output>
+                <alg-print id='red_command' comment='yeah' comment-id='yellow_comment'>$1$</alg-print>
+                <alg-output>$2 + x + $ Get-Pivot$(A, Q, x)$</alg-output>
                 <alg-yield>$3$</alg-yield>
             </alg-algorithm>
         </div>
@@ -55,17 +55,17 @@
         
         <p>
             <alg-algorithm name="Super-Sum-Algorithm" parameters="x A R" comment="A nice, efficient algorithm right here">
-                <alg-if condition="x > |A|">
-                    <alg-foreach condition="z \in R" comment="For each do something.">
+                <alg-if condition="$x > |A| + $ Funcky-Function$(x, 1, R)$">
+                    <alg-foreach condition="$z \in R \; \And $ Is-Prime$(z)$" comment="For each do something.">
                         <alg-step>$y = $ Aux-Function$(z, x)$</alg-step>
                     </alg-foreach>
                 </alg-if>
                 <alg-else-if condition="x < |A|">
                     <alg-for init="i = 1" to="|R|" label="for_loop">
-                        <alg-if condition="x \bmod 3 = 1">
+                        <alg-if condition="$x \bmod 3 = 1$">
                             <alg-break>for_loop</alg-break>
                         </alg-if>
-                        <alg-else-if condition="x \bmod 3 = 2">
+                        <alg-else-if condition="$x \bmod 3 = 2 \,\And \; \Not $ Is-Something$(x)$">
                             <alg-continue>for_loop</alg-continue>
                         </alg-else-if>
                         <alg-return>$A \setminus R$</alg-return>
@@ -83,28 +83,5 @@
     <alg-algorithm name="Funky-Computation-Algorithm" parameters="(  y A , Z)" comment="Comment is here!">
         <alg-continue id="    red_command " comment="yeah" comment-id="   yellow_comment">Fun</alg-continue>
     </alg-algorithm>
-        
-        
-        <hr>
-        <table class='algotype-code-row-table'>
-            <tbody class='algotype-code-row-tbody'>
-                <tr class='algotype-algorithm-line'>
-                    <td class='algotype-algorithm-line-number'>
-                    1
-                    </td>
-                    
-                    <td class='algotype-line-number-space'>
-                        
-                    </td>
-                    
-                    <td class='algotype-text algotype-keyword'>
-                        yeah 
-                    </td>
-                    <td>
-                        <span class='algotype-label' style='color:blue;'>label</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </body>
 </html>
