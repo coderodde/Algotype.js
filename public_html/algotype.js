@@ -342,10 +342,61 @@ Algotype.typesetElse = function(elseElement, state) {
     return htmlText;
 };
 
+Algotype.typesetCondition = function(conditionText) {
+    conditionText = conditionText.trim();
+    
+    var inTeX = false;
+    var htmlText = "";
+    var call = "";
+    
+    for (var i = 0; i < conditionText.length; ++i) {
+        var character = conditionText[i];
+        
+        switch (character) {
+            case '$':
+                if (!inTeX) {
+                    if (call) {
+                        // Dump the current call.
+                        htmlText += 
+                            " <span " + 
+                            "class='algotype-text algotype-algorithm-name' style='color: red;'>" + 
+                            call + 
+                            "</span>";
+                    
+                        call = "";
+                    }
+                    
+                    inTeX = true;
+                } else {
+                    inTeX = false;
+                }
+                
+                htmlText += "$";
+                break;
+               
+            default:
+                
+                if (inTeX) {
+                    htmlText += character;
+                } else {
+                    call += character;
+                }
+        }
+    }
+    
+    if (call) {
+        htmlText += " <span class='algotype-text algotype-algorithm-name'>" +
+                    call +
+                    "</span>";
+    }
+    
+    return htmlText;
+};
+
 Algotype.typesetStep = function(stepElement, state, isReturn) {
     var stepText = (stepElement.innerHTML || "").trim();
     var inTeX = false;
-    var htmlText = "";
+    var htmlText = ""; //Algotype.typesetCondition(stepText);
     var call = "";
     
     for (var i = 0; i < stepText.length; ++i) {
@@ -539,7 +590,6 @@ Algotype.typesetContinue = function(continueElement, state) {
             "    </tr>\n" +
             "  </tbody>\n" +
             "</table>\n";
-    
     
     state["lineNumber"]++;
     return htmlText;
@@ -1149,72 +1199,83 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
 
 Algotype.setCSSRules = function() {
     var styleElement = document.createElement("style");
+    styleElement.type = "text/css";
     styleElement.innerHTML = 
-"alg-algorithm {   \
-    display: none; \
-} \
-.algotype-text {                 \
-    padding-bottom: 2px;          \
-    font-family: Times New Roman; \
-    font-size: 18px;              \
-                       \
-} \
-.algotype-keyword {    \
-    font-weight: bold; \
-} \
-table.algotype-code-row-table { \
-    padding: 0;                 \
-    margin: 0;                  \
-    border-collapse: collapse;  \
-    margin-bottom: -3px;        \
-} \
-tbody.algotype-code-row-tbody { \
-    padding: 0;                 \
-    margin: 0;                  \
-    margin-bottom: -3px;        \
-} \
-tr.algotype-algorithm-line { \
-    padding: 0;              \
-    margin: 0;               \
-    margin-bottom: -3px;     \
-} \
-td.algotype-algorithm-line-number { \
-    padding: 0;                     \
-    margin: 0;                      \
-    font-family: Times New Roman;   \
-    font-size: 16px;                \
-    font-weight: bold;              \
-    width: 20px;                    \
-    text-align: right;              \
-    margin-bottom: 0px;             \
-} \
-td.algotype-line-number-space { \
-    padding: 0;                 \
-    margin: 0;                  \
-    margin-bottom: -3px;        \
-} \
-.algotype-algorithm-name {    \
-    font-variant: small-caps; \
-    font-weight: bolder;      \
-} \
-.algotype-label {           \
-    font-size: 14px;        \
-    font-family: monospace; \
-    font-weight: normal;    \
-} \
-.algotype-step-comment {          \
-    font-family: Times New Roman; \
-    font-size: 18px;              \
-    font-weight: normal;          \
-    font-variant: normal;         \
-}";
+"alg-algorithm {   \n\
+    display: none;  \n\
+} \n\
+\n\
+.algotype-text {                  \n\
+    padding-bottom: 2px;          \n\
+    font-family: Times New Roman; \n\
+    font-size: 18px;              \n\
+} \n\
+\n\
+.algotype-keyword {    \n\
+    font-weight: bold; \n\
+} \n\
+\n\
+table.algotype-code-row-table { \n\
+    padding: 0;                 \n\
+    margin: 0;                  \n\
+    border-collapse: collapse;  \n\
+    margin-bottom: -3px;        \n\
+} \n\
+\n\
+tbody.algotype-code-row-tbody { \n\
+    padding: 0;                 \n\
+    margin: 0;                  \n\
+    margin-bottom: -3px;        \n\
+} \n\
+\n\
+tr.algotype-algorithm-line { \n\
+    padding: 0;              \n\
+    margin: 0;               \n\
+    margin-bottom: -3px;     \n\
+} \n\
+\n\
+td.algotype-algorithm-line-number { \n\
+    padding: 0;                     \n\
+    margin: 0;                      \n\
+    font-family: Times New Roman;   \n\
+    font-size: 16px;                \n\
+    font-weight: bold;              \n\
+    width: 20px;                    \n\
+    text-align: right;              \n\
+    margin-bottom: 0px;             \n\
+} \n\
+\n\
+td.algotype-line-number-space { \n\
+    padding: 0;                 \n\
+    margin: 0;                  \n\
+    margin-bottom: -3px;        \n\
+} \n\
+\n\
+.algotype-algorithm-name {    \n\
+    font-variant: small-caps; \n\
+    font-weight: bolder;      \n\
+} \n\
+.algotype-label {} \n\
+\n\
+.algotype-label { \n\
+        font-size: 14px; \n\
+        font-family: monospace; \n\
+        font-weight: normal;\n\
+}\n\
+\n\
+.algotype-step-comment {          \n\
+    font-family: Times New Roman; \n\
+    font-size: 18px;              \n\
+    font-weight: normal;          \n\
+    font-variant: normal;         \n\
+}\n";
     document.head.appendChild(styleElement);
 };
     
 Algotype.setup = function() {
     // Load MathJax.
-    Algotype.loadMathJax();
     Algotype.setCSSRules();
+    Algotype.loadMathJax();
     
     // Typeset all algorithms present in the DOM.
     var algorithmList = document.getElementsByTagName("alg-algorithm");
