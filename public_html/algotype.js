@@ -1113,9 +1113,9 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
 
     var htmlText = 
             "<table class='algotype-algorithm-header'>\n" +
-            "    <tbody class='algotype-algorithm-header'>\n" +
-            "        <tr>\n" + 
-            "            <td>" +
+            "    <tbody class='algotype-no-padding-no-margin'>\n" +
+            "        <tr class='algotype-no-padding-no-margin'>\n" + 
+            "            <td class='algotype-no-padding-no-margin'>" +
             "<span class='algotype-text algotype-algorithm-name'>" +
             algorithmName +
             "</span><span class='algotype-text'>" + algorithmParameterList + 
@@ -1214,10 +1214,14 @@ td.algotype-line-number-space { \n\
         font-family: monospace; \n\
         font-weight: normal;\n\
 }\n\
+.algotype-no-padding-no-margin {\n\
+    margin: 0;  \n\
+    padding: 0; \n\
+}\n\
 \n\
 .algotype-algorithm-header { \n\
-    border-bottom: 1px solid black; \n\
-    border-top: 1px solid black;    \n\
+    border-bottom: 2px solid black; \n\
+    border-top: 3px solid black;    \n\
     border-colapse: collapse;       \n\
     margin: 0;                      \n\
     padding: 0;                     \n\
