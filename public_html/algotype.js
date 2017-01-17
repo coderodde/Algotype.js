@@ -1251,21 +1251,21 @@ Algotype.setup = function() {
 
 Algotype.dispatchTable = {};
 
-Algotype.dispatchTable["alg-foreach"]      = Algotype.typesetForEach;
-Algotype.dispatchTable["alg-for"]          = Algotype.typesetFor;
-Algotype.dispatchTable["alg-for-downto"]   = Algotype.typesetForDownto;
-Algotype.dispatchTable["alg-forever"]      = Algotype.typesetForever;
-Algotype.dispatchTable["alg-while"]        = Algotype.typesetWhile;
-Algotype.dispatchTable["alg-repeat-until"] = Algotype.typesetRepeatUntil;
-Algotype.dispatchTable["alg-if"]           = Algotype.typesetIf;
-Algotype.dispatchTable["alg-else-if"]      = Algotype.typesetElseIf;
-Algotype.dispatchTable["alg-else"]         = Algotype.typesetElse;
-Algotype.dispatchTable["alg-step"]         = Algotype.typesetStep;
-Algotype.dispatchTable["alg-return"]       = Algotype.typesetReturn;
 Algotype.dispatchTable["alg-break"]        = Algotype.typesetBreak;
 Algotype.dispatchTable["alg-continue"]     = Algotype.typesetContinue;
-Algotype.dispatchTable["alg-print"]        = Algotype.typesetPrint;
+Algotype.dispatchTable["alg-else"]         = Algotype.typesetElse;
+Algotype.dispatchTable["alg-else-if"]      = Algotype.typesetElseIf;
+Algotype.dispatchTable["alg-for"]          = Algotype.typesetFor;
+Algotype.dispatchTable["alg-foreach"]      = Algotype.typesetForEach;
+Algotype.dispatchTable["alg-forever"]      = Algotype.typesetForever;
+Algotype.dispatchTable["alg-for-downto"]   = Algotype.typesetForDownto;
+Algotype.dispatchTable["alg-if"]           = Algotype.typesetIf;
 Algotype.dispatchTable["alg-output"]       = Algotype.typesetOutput;
+Algotype.dispatchTable["alg-print"]        = Algotype.typesetPrint;
+Algotype.dispatchTable["alg-repeat-until"] = Algotype.typesetRepeatUntil;
+Algotype.dispatchTable["alg-return"]       = Algotype.typesetReturn;
+Algotype.dispatchTable["alg-step"]         = Algotype.typesetStep;
+Algotype.dispatchTable["alg-while"]        = Algotype.typesetWhile;
 Algotype.dispatchTable["alg-yield"]        = Algotype.typesetYield;
 
 var oldOnloadHandler = window.onload;
