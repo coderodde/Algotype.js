@@ -424,6 +424,8 @@ Algotype.typesetConditionalLoop = function(element, state, keyword) {
         if (label[label.length - 1] !== ":") {
             label += ":";
         }
+        
+        htmlText += Algotype.getLabelHtml(state, label);
     }
     
     var id = (element.getAttribute("id") || "").trim();
