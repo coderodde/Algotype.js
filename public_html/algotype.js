@@ -40,7 +40,8 @@ Algotype.MATHJAX_CONFIG =
                 'In:      "\\\\mathbf{in}",'     +
                 'Mapped:  "\\\\mathbf{mapped}",' +
                 'Nil:     "\\\\mathbf{nil}"'     +
-            '}' +
+            '},' +
+            'extensions: ["color.js"]' +
         '}' +
     '});';
     
