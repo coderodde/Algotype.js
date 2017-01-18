@@ -871,6 +871,7 @@ td.algotype-line-number-space { \n\
     border-colapse: collapse;       \n\
     margin: 0;                      \n\
     padding: 0;                     \n\
+    margin-bottom: 3px;             \n\
 }\n\
 \n\
 .algotype-step-comment {          \n\
