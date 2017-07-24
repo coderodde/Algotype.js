@@ -1,6 +1,6 @@
-//// //////////////////////////////////////////////////////  ////
+//// ////////////////////////////////////////////////////// ////
  // Algotype.js, version 1.61 by Rodion "(code)rodde" Efremov // 
-/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 
 var Algotype = {};
 
@@ -829,16 +829,17 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
     }
     var parentNode = algorithmElement.parentNode;
     var width = algorithmElement.getAttribute("width");
-    var upperHeaderBarStyle = 
-            algorithmElement.getAttribute("algorithm-upper-header-style");
-    var lowerHeaderBarStyle = 
-            algorithmElement.getAttribute("algorithm-lower-header-style");
+    var upperHeaderBarClass = 
+            algorithmElement.getAttribute("algorithm-upper-header-class");
+    var lowerHeaderBarClass = 
+            algorithmElement.getAttribute("algorithm-lower-header-class");
     
-    var customStyleText = upperHeaderBarStyle + " " + lowerHeaderBarStyle;
-    
+    var customStyleClasses = upperHeaderBarClass + " " + 
+                             lowerHeaderBarClass + "'";
+                     
+    console.log(customStyleClasses);
     var htmlText = 
-            "<table class='algotype-algorithm-header' " +
-            (customStyleText ? "style='" + customStyleText + "' " : " ") +
+            "<table class='algotype-algorithm-header " + customStyleClasses + 
             (width ? "style='width: " + width + "px;'" : "") + ">\n" +
             "    <tbody class='algotype-no-padding-no-margin'>\n" +
             "        <tr class='algotype-no-padding-no-margin'>\n" + 
@@ -866,14 +867,15 @@ Algotype.typesetAlgorithm = function(algorithmElement) {
         }
     }
     
-    var footerBarStyle = 
-            algorithmElement.getAttribute("algorithm-footer-style");
+    var footerBarClass = 
+            algorithmElement.getAttribute("algorithm-footer-class");
     
-    if (footerBarStyle) {
+    if (footerBarClass) {
         htmlText += 
                 "<br />" +
                 "<hr style='padding: 0px; margin: 0px; margin-top: -15px; " +
-                "text-align: left; border-width: 0px; " + footerBarStyle + "' />";
+                "text-align: left; border-width: 0px;' class='" + 
+                footerBarClass + "' />";
     }
     
     var paragraphElement = document.createElement("p");
@@ -953,7 +955,7 @@ td.algotype-line-number-space { \n\
 }\n\
 \n\
 .algotype-algorithm-header {        \n\
-    border-bottom: 2px solid gray; \n\
+    border-bottom: 2px solid black; \n\
     border-top: 3px solid black;    \n\
     border-colapse: collapse;       \n\
     margin: 0;                      \n\
