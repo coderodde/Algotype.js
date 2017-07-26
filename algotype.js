@@ -77,49 +77,6 @@ Algotype.getAlgorithmHeaderComment = function (algorithmElement) {
             " " + algorithmHeaderComment;
 };
 
-Algotype.getAlgorithmParameterList = function(algorithmElement) {
-    var algorithmParameterList = 
-            algorithmElement.getAttribute("parameters") || "";
-    
-    algorithmParameterList = algorithmParameterList.trim();
-    
-    if (!algorithmParameterList) {
-        return "$()$";
-    }
-    
-    // Remove the beginning parenthesis, if present.
-    if (algorithmParameterList[0] === "(") {
-        algorithmParameterList = 
-                algorithmParameterList.substring(1, 
-                                                 algorithmParameterList.length);
-    }
-    
-    // Remove the ending parenthesis, if present.
-    if (algorithmParameterList[algorithmParameterList.length - 1] === ")") {
-        algorithmParameterList =
-                algorithmParameterList
-                .substring(0, algorithmParameterList.length - 1);
-    }
-    
-    // Remove possible leading and trailing space within the parentheses.
-    algorithmParameterList = algorithmParameterList.trim();
-    
-    // Split the string into parameter tokens.
-    var algorithmParameters = algorithmParameterList.split(/\s*,\s*|\s+/);
-    
-    // Construct the TeX for the algorithm parameter list.
-    var tex = "$(";
-    var separator = "";
-    
-    for (var i = 0; i < algorithmParameters.length; ++i) {
-        tex += separator;
-        tex += algorithmParameters[i];
-        separator = ", ";
-    }
-    
-    return tex + ")$";
-};
-
 Algotype.getLabelHtml = function(state, label) {
     return "<table class='algotype-code-row-table'>\n" +
            "  <tbody class='algotype-code-row-tbody'\n" +
@@ -451,7 +408,7 @@ Algotype.typesetConditionalLoop = function(element, state, keyword) {
                 "px'></td>\n" +
                 "      <td class='algotype-text algotype-keyword'>" +
                 idTextBegin + keyword + " " + 
-                conditionTeX + ":" + idTextEnd + 
+                conditionTeX + " do " + idTextEnd + 
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
@@ -543,7 +500,7 @@ Algotype.typesetCountingLoop = function(element,
                 "      <td class='algotype-text algotype-keyword'>" +
                 idTextBegin + fromKeyword + " " +  
                 initConditionTeX + " " + toKeyword + " " + toConditionTeX + 
-                stepText + ":" + idTextEnd +
+                stepText + " do " + idTextEnd +
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
@@ -619,7 +576,7 @@ Algotype.typesetUnconditionalBlock = function(element, state, keyword) {
                  Algotype.DISTANCE_BETWEEN_LINE_NUMBER_AND_CODE) + 
                 "px'></td>\n" +
                 "      <td class='algotype-text algotype-keyword'>" +
-                idTextBegin + keyword + ":" + idTextEnd +
+                idTextBegin + keyword + idTextEnd +
                 (comment ? comment : "") +
                 "      </td> " +
                 "    </tr>\n" +
@@ -655,7 +612,7 @@ Algotype.processInnerElements = function(element, state) {
 };
 
 Algotype.typesetForever = function(foreverElement, state) {
-    return Algotype.typesetUnconditionalBlock(foreverElement, state, "forever");
+    return Algotype.typesetUnconditionalBlock(foreverElement, state, "forever do");
 };
 
 Algotype.typesetRepeatUntil = function(repeatUntilElement, state) {
