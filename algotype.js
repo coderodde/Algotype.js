@@ -5,6 +5,9 @@
 var Algotype = {};
 
 (function() {
+    console.log("---------------------------");
+    console.log("Algotype.js initializing...");
+    console.log("---------------------------");
     // The string beginning the comments of the algorithm declaration.
     Algotype.ALGORITHM_HEADER_COMMENT_TAG = "#";
 
@@ -976,4 +979,8 @@ var Algotype = {};
 
         Algotype.setup();
     };
+    
+    console.log("------------------------");
+    console.log("Algotype.js is deployed!");
+    console.log("------------------------");
 })();
